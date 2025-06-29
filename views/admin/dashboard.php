@@ -98,29 +98,29 @@
                     </h4>
                     
                     <nav class="nav flex-column">
-                        <a class="nav-link active" href="/admin/dashboard">
+                        <a class="nav-link active" href="<?= APP_URL ?>/admin/dashboard">
                             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                         </a>
-                        <a class="nav-link" href="/admin/stories">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/stories">
                             <i class="fas fa-book me-2"></i>Quản lý truyện
                         </a>
-                        <a class="nav-link" href="/admin/chapters">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/chapters">
                             <i class="fas fa-list me-2"></i>Quản lý chapter
                         </a>
-                        <a class="nav-link" href="/admin/categories">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/categories">
                             <i class="fas fa-tags me-2"></i>Thể loại
                         </a>
-                        <a class="nav-link" href="/admin/users">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/users">
                             <i class="fas fa-users me-2"></i>Người dùng
                         </a>
-                        <a class="nav-link" href="/admin/settings">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/settings">
                             <i class="fas fa-cog me-2"></i>Cài đặt
                         </a>
                         <hr class="text-white-50">
-                        <a class="nav-link" href="/" target="_blank">
+                        <a class="nav-link" href="<?= APP_URL ?>/" target="_blank">
                             <i class="fas fa-external-link-alt me-2"></i>Xem website
                         </a>
-                        <a class="nav-link" href="/admin/logout">
+                        <a class="nav-link" href="<?= APP_URL ?>/admin/logout">
                             <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
                         </a>
                     </nav>

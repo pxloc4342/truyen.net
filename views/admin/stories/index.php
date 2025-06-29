@@ -1,9 +1,14 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0"><i class="fas fa-book me-2"></i>Quản lý truyện</h2>
-        <a href="/admin/stories/create" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> Thêm truyện mới
-        </a>
+        <div>
+            <a href="<?= APP_URL ?>/admin/dashboard" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-home me-1"></i> Về trang admin
+            </a>
+            <a href="<?= APP_URL ?>/admin/stories/create" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Thêm truyện mới
+            </a>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover align-middle bg-white">
@@ -56,11 +61,14 @@
                             </td>
                             <td><?= date('d/m/Y', strtotime($story['created_at'])) ?></td>
                             <td>
-                                <a href="/admin/stories/edit/<?= $story['id'] ?>" class="btn btn-sm btn-warning me-1">
+                                <a href="<?= APP_URL ?>/admin/stories/edit/<?= $story['id'] ?>" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="/admin/stories/delete/<?= $story['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa truyện này?');">
+                                <a href="<?= APP_URL ?>/admin/stories/delete/<?= $story['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa truyện này?');">
                                     <i class="fas fa-trash"></i>
+                                </a>
+                                <a href="<?= APP_URL ?>/admin/chapters/<?= $story['id'] ?>" class="btn btn-sm btn-info me-1">
+                                    <i class="fas fa-list"></i> Quản lý chương
                                 </a>
                             </td>
                         </tr>

@@ -53,6 +53,10 @@ $router->addRoute('/admin/stories', 'AdminStoryController@index');
 $router->addRoute('/admin/stories/create', 'AdminStoryController@create');
 $router->addRoute('/admin/stories/edit/{id}', 'AdminStoryController@edit');
 $router->addRoute('/admin/stories/delete/{id}', 'AdminStoryController@delete');
+$router->addRoute('/admin/chapters/{story_id}', 'AdminChapterController@index');
+$router->addRoute('/admin/chapters/create/{story_id}', 'AdminChapterController@create');
+$router->addRoute('/admin/chapters/edit/{id}', 'AdminChapterController@edit');
+$router->addRoute('/admin/chapters/delete/{id}', 'AdminChapterController@delete');
 
 // Xử lý request
 $router->dispatch();

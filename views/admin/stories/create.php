@@ -1,8 +1,11 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0"><i class="fas fa-plus me-2"></i>Thêm truyện mới</h2>
-        <a href="/admin/stories" class="btn btn-secondary">
+        <a href="<?= APP_URL ?>/admin/stories" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
+        </a>
+        <a href="<?= APP_URL ?>/admin/dashboard" class="btn btn-outline-secondary ms-2">
+            <i class="fas fa-home me-1"></i> Về trang admin
         </a>
     </div>
     <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">

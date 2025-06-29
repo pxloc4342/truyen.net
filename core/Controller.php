@@ -49,7 +49,16 @@ class Controller {
     }
     
     protected function redirect($url) {
-        header("Location: {$url}");
+        // Nếu $url đã là absolute URL (bắt đầu bằng http), giữ nguyên
+        if (strpos($url, 'http') === 0) {
+            header('Location: ' . $url);
+        } else {
+            // Nếu $url không bắt đầu bằng / thì thêm vào
+            if (strpos($url, '/') !== 0) {
+                $url = '/' . $url;
+            }
+            header('Location: ' . APP_URL . $url);
+        }
         exit;
     }
     
