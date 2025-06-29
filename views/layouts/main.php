@@ -28,7 +28,9 @@
             <div class="container">
                 <!-- Logo -->
                 <a class="navbar-brand fw-bold text-primary" href="<?= APP_URL ?>/">
-                    <i class="fas fa-book-open me-2"></i><?= APP_NAME ?>
+                    <span class="logo-text" style="font-size:2.1rem; font-weight:700; letter-spacing:1px;">
+                        <span style="color:#1ec6f7;">Truyen</span><span style="color:#ffb300;">.net</span>
+                    </span>
                 </a>
                 
                 <!-- Mobile Toggle -->
@@ -126,26 +128,115 @@
         <?= $content ?>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer bg-dark text-light py-4">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h6 class="mb-0"><?= APP_NAME ?></h6>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="footer-links">
-                        <a href="#" class="text-muted text-decoration-none me-3">Giới thiệu</a>
-                        <a href="#" class="text-muted text-decoration-none me-3">Liên hệ</a>
-                        <a href="#" class="text-muted text-decoration-none me-3">
-                            <i class="fab fa-facebook"></i> Facebook
-                        </a>
-                        <a href="#" class="text-muted text-decoration-none">Chính sách bản quyền</a>
-                    </div>
-                </div>
+    <!-- Footer mới -->
+    <footer class="footer-custom mt-5">
+      <div class="container py-4">
+        <div class="row align-items-start">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <div class="d-flex align-items-center mb-3">
+              <span class="footer-logo fw-bold" style="font-size:2rem;">
+                <span style="color:#1ec6f7;">Truyen</span><span style="color:#ffb300;">.net</span>
+              </span>
             </div>
+            <ul class="list-unstyled text-light small mb-3">
+              <li>Quyền riêng tư</li>
+              <li>Bản quyền</li>
+              <li>Liên hệ</li>
+              <li>Chính sách bảo mật</li>
+              <li>Quy định nội dung</li>
+              <li>Điều khoản sử dụng</li>
+            </ul>
+            <hr class="border-secondary my-2">
+            <div class="text-light small">
+              Liên hệ: truyen.net@gmail.com<br>
+              Copyright © 2024 Truyen.net
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h5 class="text-white mb-3">Từ khóa</h5>
+            <div class="footer-tags d-flex flex-wrap gap-2">
+              <span class="footer-badge">Truyện tranh</span>
+              <span class="footer-badge">Truyện tranh online</span>
+              <span class="footer-badge">Đọc truyện tranh</span>
+              <span class="footer-badge">Truyện tranh hot</span>
+              <span class="footer-badge">Truyện tranh hay</span>
+              <span class="footer-badge">Truyện ngôn tình</span>
+              <span class="footer-badge">Manhwa</span>
+              <span class="footer-badge">Manga</span>
+              <span class="footer-badge">Manhua</span>
+              <span class="footer-badge">truyenqq</span>
+              <span class="footer-badge">mi2manga</span>
+              <span class="footer-badge">doctruyen3q</span>
+              <span class="footer-badge">toptruyen</span>
+              <span class="footer-badge">cmanga</span>
+              <span class="footer-badge">vlogtruyen</span>
+              <span class="footer-badge">blogtruyen</span>
+              <span class="footer-badge">truyentranhaudio</span>
+              <span class="footer-badge">vcomi</span>
+            </div>
+          </div>
         </div>
+      </div>
+      <button id="backToTop" class="btn btn-outline-light rounded-3 shadow-sm position-fixed" style="right:24px;bottom:24px;z-index:999;display:none;">
+        <i class="fas fa-chevron-up" style="color:#1ec6f7;"></i>
+      </button>
     </footer>
+    <style>
+      .footer-custom {
+        background: #232323;
+        color: #eee;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 -2px 16px rgba(0,0,0,0.08);
+        margin-top: 3rem;
+      }
+      .footer-logo {
+        font-family: 'Segoe UI', 'Arial', sans-serif;
+        letter-spacing: 1px;
+        user-select: none;
+      }
+      .footer-tags {
+        gap: 0.5rem;
+      }
+      .footer-badge {
+        display: inline-block;
+        border: 1px solid #fff3;
+        color: #fff;
+        background: transparent;
+        border-radius: 8px;
+        padding: 0.3em 1em;
+        font-size: 1em;
+        margin-bottom: 0.3em;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+        cursor: pointer;
+      }
+      .footer-badge:hover {
+        background: #1ec6f7;
+        color: #232323;
+        border-color: #1ec6f7;
+      }
+      #backToTop {
+        background: #232323;
+        border: 1px solid #1ec6f7;
+        transition: background 0.2s;
+      }
+      #backToTop:hover {
+        background: #1ec6f7;
+        border-color: #1ec6f7;
+      }
+      @media (max-width: 768px) {
+        .footer-custom { border-radius: 0; }
+        .footer-logo { font-size: 1.3rem; }
+      }
+    </style>
+    <script>
+      // Hiện nút cuộn lên đầu trang khi cuộn xuống
+      const backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        if(window.scrollY > 200) backToTop.style.display = 'block';
+        else backToTop.style.display = 'none';
+      });
+      backToTop.onclick = () => window.scrollTo({top:0,behavior:'smooth'});
+    </script>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

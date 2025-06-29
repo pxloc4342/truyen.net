@@ -1,63 +1,3 @@
-<!-- Latest Stories Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="section-header">
-            <h2>Danh sách truyện mới cập nhật</h2>
-            <p>Những chương mới nhất vừa được đăng</p>
-        </div>
-        
-        <div class="row">
-            <?php foreach ($latestStories as $story): ?>
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
-                <div class="story-card">
-                    <?php if ($story['thumbnail']): ?>
-                        <img src="<?= APP_URL . $story['thumbnail'] ?>" 
-                             class="card-img-top" 
-                             alt="<?= htmlspecialchars($story['title']) ?>">
-                    <?php else: ?>
-                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
-                            <i class="fas fa-image fa-3x text-muted"></i>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div class="card-body">
-                        <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                        <p class="author">
-                            <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-book-open me-1"></i>Đọc
-                            </a>
-                            <small class="text-muted">
-                                <i class="fas fa-eye me-1"></i><?= number_format($story['views']) ?>
-                            </small>
-                        </div>
-                    </div>
-                    
-                    <div class="status-badge status-<?= $story['status'] ?>">
-                        <?php
-                        $statusText = [
-                            'ongoing' => 'Đang ra',
-                            'completed' => 'Full',
-                            'hiatus' => 'Tạm ngưng'
-                        ];
-                        echo $statusText[$story['status']] ?? 'Đang ra';
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="<?= APP_URL ?>/truyen" class="btn btn-primary btn-lg">
-                <i class="fas fa-list me-2"></i>Xem thêm
-            </a>
-        </div>
-    </div>
-</section>
-
 <!-- Featured Stories Slider -->
 <section class="py-5 bg-light">
     <div class="container">
@@ -65,7 +5,6 @@
             <h2>Truyện nổi bật</h2>
             <p>Những bộ truyện được yêu thích nhất</p>
         </div>
-        
         <div class="featured-slider">
             <div class="swiper featured-swiper">
                 <div class="swiper-wrapper">
@@ -81,7 +20,6 @@
                                     <i class="fas fa-image fa-3x text-muted"></i>
                                 </div>
                             <?php endif; ?>
-                            
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
                                 <p class="author">
@@ -109,7 +47,6 @@
                                     <i class="fas fa-book-open me-2"></i>Đọc ngay
                                 </a>
                             </div>
-                            
                             <div class="status-badge status-<?= $story['status'] ?>">
                                 <?php
                                 $statusText = [
@@ -128,6 +65,62 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Stories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="section-header">
+            <h2>Danh sách truyện mới cập nhật</h2>
+            <p>Những chương mới nhất vừa được đăng</p>
+        </div>
+        <div class="row">
+            <?php foreach ($latestStories as $story): ?>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                <div class="story-card">
+                    <?php if ($story['thumbnail']): ?>
+                        <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                             class="card-img-top" 
+                             alt="<?= htmlspecialchars($story['title']) ?>">
+                    <?php else: ?>
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                        <p class="author">
+                            <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-book-open me-1"></i>Đọc
+                            </a>
+                            <small class="text-muted">
+                                <i class="fas fa-eye me-1"></i><?= number_format($story['views']) ?>
+                            </small>
+                        </div>
+                    </div>
+                    <div class="status-badge status-<?= $story['status'] ?>">
+                        <?php
+                        $statusText = [
+                            'ongoing' => 'Đang ra',
+                            'completed' => 'Full',
+                            'hiatus' => 'Tạm ngưng'
+                        ];
+                        echo $statusText[$story['status']] ?? 'Đang ra';
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="text-center mt-4">
+            <a href="<?= APP_URL ?>/truyen" class="btn btn-primary btn-lg">
+                <i class="fas fa-list me-2"></i>Xem thêm
+            </a>
         </div>
     </div>
 </section>

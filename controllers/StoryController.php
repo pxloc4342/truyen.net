@@ -14,7 +14,7 @@ class StoryController extends Controller {
     
     public function show($id) {
         $storyModel = new Story();
-        $story = $storyModel->getStoryById($id);
+        $story = $storyModel->getById($id);
         
         if (!$story) {
             $this->render('errors/404', [
