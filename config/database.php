@@ -1,7 +1,7 @@
 <?php
 // Cấu hình kết nối database
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'webtruyentranh');
+define('DB_NAME', 'WebTruyenTranh');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');

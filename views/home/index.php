@@ -1,124 +1,185 @@
-<!-- Hero Section -->
-<div class="hero-section bg-primary text-white py-5 rounded mb-4">
-    <div class="row align-items-center">
-        <div class="col-md-8">
-            <h1 class="display-4 fw-bold">Chào mừng đến với <?= APP_NAME ?></h1>
-            <p class="lead">Khám phá thế giới truyện tranh đa dạng với hàng nghìn bộ truyện hấp dẫn</p>
-            <a href="<?= APP_URL ?>/truyen" class="btn btn-light btn-lg">Khám phá ngay</a>
-        </div>
-        <div class="col-md-4 text-center">
-            <i class="fas fa-book-open display-1"></i>
-        </div>
-    </div>
-</div>
-
 <!-- Latest Stories Section -->
-<section class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h3">Truyện mới cập nhật</h2>
-        <a href="<?= APP_URL ?>/truyen" class="btn btn-outline-primary">Xem tất cả</a>
-    </div>
-    
-    <div class="row">
-        <?php if (!empty($latestStories)): ?>
+<section class="py-5">
+    <div class="container">
+        <div class="section-header">
+            <h2>Danh sách truyện mới cập nhật</h2>
+            <p>Những chương mới nhất vừa được đăng</p>
+        </div>
+        
+        <div class="row">
             <?php foreach ($latestStories as $story): ?>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card h-100">
-                        <img src="<?= $story['thumbnail'] ?? APP_URL . '/assets/images/default-cover.jpg' ?>" 
-                             class="card-img-top" alt="<?= htmlspecialchars($story['title']) ?>"
-                             style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                            <p class="card-text text-muted small">
-                                <?= htmlspecialchars(substr($story['description'] ?? '', 0, 100)) ?>...
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="fas fa-eye me-1"></i><?= number_format($story['views'] ?? 0) ?>
-                                </small>
-                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-sm btn-primary">Đọc</a>
-                            </div>
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                <div class="story-card">
+                    <?php if ($story['thumbnail']): ?>
+                        <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                             class="card-img-top" 
+                             alt="<?= htmlspecialchars($story['title']) ?>">
+                    <?php else: ?>
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                        <p class="author">
+                            <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-book-open me-1"></i>Đọc
+                            </a>
+                            <small class="text-muted">
+                                <i class="fas fa-eye me-1"></i><?= number_format($story['views']) ?>
+                            </small>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Chưa có truyện nào được thêm vào hệ thống.
+                    
+                    <div class="status-badge status-<?= $story['status'] ?>">
+                        <?php
+                        $statusText = [
+                            'ongoing' => 'Đang ra',
+                            'completed' => 'Full',
+                            'hiatus' => 'Tạm ngưng'
+                        ];
+                        echo $statusText[$story['status']] ?? 'Đang ra';
+                        ?>
+                    </div>
                 </div>
             </div>
-        <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="<?= APP_URL ?>/truyen" class="btn btn-primary btn-lg">
+                <i class="fas fa-list me-2"></i>Xem thêm
+            </a>
+        </div>
     </div>
 </section>
 
-<!-- Hot Stories Section -->
-<section class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h3">Truyện hot</h2>
-        <a href="<?= APP_URL ?>/truyen?sort=hot" class="btn btn-outline-primary">Xem tất cả</a>
-    </div>
-    
-    <div class="row">
-        <?php if (!empty($hotStories)): ?>
-            <?php foreach ($hotStories as $story): ?>
-                <div class="col-md-3 col-sm-6 mb-3">
-                    <div class="card h-100">
-                        <img src="<?= $story['thumbnail'] ?? APP_URL . '/assets/images/default-cover.jpg' ?>" 
-                             class="card-img-top" alt="<?= htmlspecialchars($story['title']) ?>"
-                             style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                            <p class="card-text text-muted small">
-                                <?= htmlspecialchars(substr($story['description'] ?? '', 0, 100)) ?>...
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    <i class="fas fa-fire text-danger me-1"></i><?= number_format($story['views'] ?? 0) ?>
-                                </small>
-                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-sm btn-primary">Đọc</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Chưa có truyện nào được thêm vào hệ thống.
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
-
-<!-- Categories Section -->
-<section class="mb-5">
-    <h2 class="h3 mb-3">Thể loại</h2>
-    <div class="row">
-        <?php if (!empty($categories)): ?>
-            <?php foreach ($categories as $category): ?>
-                <div class="col-md-2 col-sm-4 col-6 mb-2">
-                    <a href="<?= APP_URL ?>/the-loai/<?= $category['id'] ?>" class="text-decoration-none">
-                        <div class="card text-center">
+<!-- Featured Stories Slider -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="section-header">
+            <h2>Truyện nổi bật</h2>
+            <p>Những bộ truyện được yêu thích nhất</p>
+        </div>
+        
+        <div class="featured-slider">
+            <div class="swiper featured-swiper">
+                <div class="swiper-wrapper">
+                    <?php foreach ($featuredStories as $story): ?>
+                    <div class="swiper-slide">
+                        <div class="story-card">
+                            <?php if ($story['thumbnail']): ?>
+                                <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                                     class="card-img-top" 
+                                     alt="<?= htmlspecialchars($story['title']) ?>">
+                            <?php else: ?>
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            <?php endif; ?>
+                            
                             <div class="card-body">
-                                <i class="fas fa-tag text-primary mb-2"></i>
-                                <h6 class="card-title"><?= htmlspecialchars($category['name']) ?></h6>
-                                <small class="text-muted"><?= $category['count'] ?? 0 ?> truyện</small>
+                                <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                                <p class="author">
+                                    <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                                </p>
+                                <p class="card-text">
+                                    <?= htmlspecialchars(substr($story['description'], 0, 100)) ?>...
+                                </p>
+                                <div class="category-pills">
+                                    <?php
+                                    $categories = $this->db->fetchAll(
+                                        "SELECT c.id, c.name FROM categories c 
+                                         JOIN story_category sc ON c.id = sc.category_id 
+                                         WHERE sc.story_id = ? LIMIT 3", 
+                                        [$story['id']]
+                                    );
+                                    foreach ($categories as $category):
+                                    ?>
+                                    <span class="category-pill">
+                                        <?= htmlspecialchars($category['name']) ?>
+                                    </span>
+                                    <?php endforeach; ?>
+                                </div>
+                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-primary w-100">
+                                    <i class="fas fa-book-open me-2"></i>Đọc ngay
+                                </a>
+                            </div>
+                            
+                            <div class="status-badge status-<?= $story['status'] ?>">
+                                <?php
+                                $statusText = [
+                                    'ongoing' => 'Đang ra',
+                                    'completed' => 'Full',
+                                    'hiatus' => 'Tạm ngưng'
+                                ];
+                                echo $statusText[$story['status']] ?? 'Đang ra';
+                                ?>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Chưa có thể loại nào được thêm vào hệ thống.
-                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
-</section> 
+</section>
+
+<script>
+// Initialize Swiper for Featured Stories
+document.addEventListener('DOMContentLoaded', function() {
+    const swiper = new Swiper('.featured-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            1024: {
+                slidesPerView: 4,
+            },
+        }
+    });
+});
+
+// Add fade-in animation to story cards
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in-up');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.story-card').forEach(card => {
+    observer.observe(card);
+});
+</script> 

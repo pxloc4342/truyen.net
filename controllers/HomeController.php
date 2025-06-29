@@ -2,26 +2,28 @@
 class HomeController extends Controller {
     
     public function index() {
-        // Lấy danh sách truyện mới nhất
-        $latestStories = $this->db->fetchAll(
-            "SELECT * FROM stories ORDER BY created_at DESC LIMIT 8"
-        );
+        // Get latest stories (6 per row as per design)
+        $latestStories = $this->db->fetchAll("
+            SELECT s.*, 
+                   (SELECT COUNT(*) FROM chapters WHERE story_id = s.id) as chapter_count
+            FROM stories s 
+            ORDER BY s.created_at DESC 
+            LIMIT 12
+        ");
         
-        // Lấy danh sách truyện hot
-        $hotStories = $this->db->fetchAll(
-            "SELECT * FROM stories ORDER BY views DESC LIMIT 8"
-        );
-        
-        // Lấy danh sách thể loại
-        $categories = $this->db->fetchAll(
-            "SELECT * FROM categories ORDER BY name ASC"
-        );
+        // Get featured stories for slider (top viewed stories)
+        $featuredStories = $this->db->fetchAll("
+            SELECT s.*, 
+                   (SELECT COUNT(*) FROM chapters WHERE story_id = s.id) as chapter_count
+            FROM stories s 
+            ORDER BY s.views DESC, s.created_at DESC 
+            LIMIT 8
+        ");
         
         $this->render('home/index', [
+            'title' => 'Trang chủ - ' . APP_NAME,
             'latestStories' => $latestStories,
-            'hotStories' => $hotStories,
-            'categories' => $categories,
-            'title' => 'Trang chủ - ' . APP_NAME
+            'featuredStories' => $featuredStories
         ]);
     }
 }

@@ -57,6 +57,10 @@ $router->addRoute('/admin/chapters/{story_id}', 'AdminChapterController@index');
 $router->addRoute('/admin/chapters/create/{story_id}', 'AdminChapterController@create');
 $router->addRoute('/admin/chapters/edit/{id}', 'AdminChapterController@edit');
 $router->addRoute('/admin/chapters/delete/{id}', 'AdminChapterController@delete');
+$router->addRoute('/admin/categories', 'AdminCategoryController@index');
+$router->addRoute('/admin/categories/create', 'AdminCategoryController@create');
+$router->addRoute('/admin/categories/edit/{id}', 'AdminCategoryController@edit');
+$router->addRoute('/admin/categories/delete/{id}', 'AdminCategoryController@delete');
 
 // Xử lý request
 $router->dispatch();

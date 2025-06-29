@@ -13,60 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Popover(popoverTriggerEl);
     });
 
-    // Add fade-in animation to cards
-    const cards = document.querySelectorAll('.card');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-            }
-        });
-    });
-
-    cards.forEach(card => {
-        observer.observe(card);
-    });
-
-    // Search functionality
-    const searchForm = document.querySelector('form[action="/tim-kiem"]');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            const searchInput = this.querySelector('input[name="q"]');
-            if (!searchInput.value.trim()) {
-                e.preventDefault();
-                searchInput.focus();
-                showAlert('Vui lòng nhập từ khóa tìm kiếm', 'warning');
-            }
-        });
-    }
-
-    // Lazy loading for images
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-
-    images.forEach(img => {
-        imageObserver.observe(img);
-    });
-
-    // Add to favorites functionality
-    const favoriteButtons = document.querySelectorAll('.btn-favorite');
-    favoriteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const mangaId = this.dataset.mangaId;
-            toggleFavorite(mangaId, this);
-        });
-    });
-
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -81,97 +27,180 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Back to top button
-    const backToTopButton = document.createElement('button');
-    backToTopButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    backToTopButton.className = 'btn btn-primary position-fixed';
-    backToTopButton.style.cssText = 'bottom: 20px; right: 20px; z-index: 1000; display: none; border-radius: 50%; width: 50px; height: 50px;';
-    backToTopButton.title = 'Về đầu trang';
-    document.body.appendChild(backToTopButton);
-
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopButton.style.display = 'block';
-        } else {
-            backToTopButton.style.display = 'none';
-        }
+    // Add loading animation to story cards
+    const storyCards = document.querySelectorAll('.story-card');
+    storyCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('fade-in-up');
     });
 
-    backToTopButton.addEventListener('click', function() {
+    // Lazy loading for images
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+
+    // Search functionality
+    const searchForm = document.querySelector('form[action*="tim-kiem"]');
+    const searchInput = searchForm?.querySelector('input[name="q"]');
+    
+    if (searchInput) {
+        // Auto-complete search suggestions
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length >= 2) {
+                searchTimeout = setTimeout(() => {
+                    fetchSearchSuggestions(query);
+                }, 300);
+            }
+        });
+        
+        // Search on Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchForm.submit();
+            }
+        });
+    }
+
+    // Story card hover effects
+    storyCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+            this.style.boxShadow = '0 20px 40px rgba(0,0,0,0.15)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.08)';
+        });
+    });
+
+    // Category pills hover effect
+    const categoryPills = document.querySelectorAll('.category-pill');
+    categoryPills.forEach(pill => {
+        pill.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        
+        pill.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+
+    // Stats counter animation
+    const statsNumbers = document.querySelectorAll('.stats-card .number');
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    statsNumbers.forEach(number => {
+        statsObserver.observe(number);
+    });
+
+    // Back to top button
+    const backToTopBtn = document.createElement('button');
+    backToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    backToTopBtn.className = 'btn btn-primary position-fixed';
+    backToTopBtn.style.cssText = 'bottom: 20px; right: 20px; z-index: 1000; border-radius: 50%; width: 50px; height: 50px; display: none;';
+    backToTopBtn.id = 'backToTop';
+    document.body.appendChild(backToTopBtn);
+    
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.style.display = 'block';
+        } else {
+            backToTopBtn.style.display = 'none';
+        }
+    });
+    
+    backToTopBtn.addEventListener('click', function() {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
+    
+    // Mobile menu improvements
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    if (navbarToggler && navbarCollapse) {
+        // Close mobile menu when clicking on a link
+        const mobileLinks = navbarCollapse.querySelectorAll('.nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 992) {
+                    navbarCollapse.classList.remove('show');
+                }
+            });
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navbarToggler.contains(e.target) && !navbarCollapse.contains(e.target)) {
+                navbarCollapse.classList.remove('show');
+            }
+        });
+    }
+    
+    // Theme toggle (if implemented)
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+    }
 });
 
+// Helper functions
+function fetchSearchSuggestions(query) {
+    // Implement search suggestions API call here
+    console.log('Searching for:', query);
+}
+
+function animateCounter(element) {
+    const target = parseInt(element.textContent.replace(/,/g, ''));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current).toLocaleString();
+    }, 16);
+}
+
 // Utility functions
-function showAlert(message, type = 'info') {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-    alertDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    
-    document.body.appendChild(alertDiv);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.remove();
-        }
-    }, 5000);
-}
-
-function toggleFavorite(mangaId, button) {
-    // Check if user is logged in
-    if (!document.querySelector('[data-user-id]')) {
-        showAlert('Vui lòng đăng nhập để thêm vào yêu thích', 'warning');
-        return;
-    }
-
-    // Show loading state
-    const originalContent = button.innerHTML;
-    button.innerHTML = '<span class="loading"></span>';
-    button.disabled = true;
-
-    // Make AJAX request
-    fetch('/api/favorites/toggle', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({ manga_id: mangaId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const icon = button.querySelector('i');
-            if (data.is_favorite) {
-                icon.className = 'fas fa-heart text-danger';
-                showAlert('Đã thêm vào yêu thích', 'success');
-            } else {
-                icon.className = 'far fa-heart';
-                showAlert('Đã xóa khỏi yêu thích', 'info');
-            }
-        } else {
-            showAlert(data.message || 'Có lỗi xảy ra', 'danger');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showAlert('Có lỗi xảy ra khi thực hiện yêu cầu', 'danger');
-    })
-    .finally(() => {
-        button.innerHTML = originalContent;
-        button.disabled = false;
-    });
-}
-
-// Debounce function for search
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -184,47 +213,41 @@ function debounce(func, wait) {
     };
 }
 
-// Auto-complete search
-const searchInput = document.querySelector('input[name="q"]');
-if (searchInput) {
-    const debouncedSearch = debounce(function(query) {
-        if (query.length < 2) return;
-        
-        fetch(`/api/search/suggest?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                // Handle search suggestions
-                console.log('Search suggestions:', data);
-            })
-            .catch(error => {
-                console.error('Search error:', error);
-            });
-    }, 300);
-
-    searchInput.addEventListener('input', function() {
-        debouncedSearch(this.value);
-    });
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
 }
 
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    // Ctrl/Cmd + K for search
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        const searchInput = document.querySelector('input[name="q"]');
-        if (searchInput) {
-            searchInput.focus();
-        }
+// Error handling
+window.addEventListener('error', function(e) {
+    console.error('JavaScript Error:', e.error);
+});
+
+// Performance monitoring
+window.addEventListener('load', function() {
+    if ('performance' in window) {
+        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+        console.log('Page load time:', loadTime + 'ms');
     }
-    
-    // Escape to close modals
-    if (e.key === 'Escape') {
-        const modals = document.querySelectorAll('.modal.show');
-        modals.forEach(modal => {
-            const modalInstance = bootstrap.Modal.getInstance(modal);
-            if (modalInstance) {
-                modalInstance.hide();
-            }
-        });
-    }
-}); 
+});
+
+// Service Worker registration (for PWA features)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+                console.log('SW registered: ', registration);
+            })
+            .catch(function(registrationError) {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+} 

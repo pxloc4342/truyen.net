@@ -12,11 +12,11 @@ try {
     echo "<p>✓ Kết nối MySQL thành công</p>";
     
     // Tạo database
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS webtruyentranh CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    echo "<p>✓ Tạo database 'webtruyentranh' thành công</p>";
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS WebTruyenTranh CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    echo "<p>✓ Tạo database 'WebTruyenTranh' thành công</p>";
     
     // Chọn database
-    $pdo->exec("USE webtruyentranh");
+    $pdo->exec("USE WebTruyenTranh");
     
     // Tạo bảng stories
     $pdo->exec("

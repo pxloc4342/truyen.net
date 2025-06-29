@@ -1,5 +1,5 @@
 -- Cập nhật bảng admins để thêm cột last_login
-USE webtruyentranh;
+USE truyen_net;
 
 -- Thêm cột last_login vào bảng admins
 ALTER TABLE admins ADD COLUMN last_login TIMESTAMP NULL AFTER email;

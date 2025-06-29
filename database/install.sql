@@ -1,6 +1,6 @@
 -- Tạo database
-CREATE DATABASE IF NOT EXISTS webtruyentranh CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE webtruyentranh;
+CREATE DATABASE IF NOT EXISTS WebTruyenTranh CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE WebTruyenTranh;
 
 -- Bảng stories (truyện)
 CREATE TABLE stories (
