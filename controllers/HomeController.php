@@ -20,10 +20,20 @@ class HomeController extends Controller {
             LIMIT 8
         ");
         
+        // Get suggested stories (top viewed 12 stories)
+        $suggestedStories = $this->db->fetchAll("
+            SELECT s.*, 
+                   (SELECT COUNT(*) FROM chapters WHERE story_id = s.id) as chapter_count
+            FROM stories s 
+            ORDER BY s.views DESC, s.created_at DESC
+            LIMIT 12
+        ");
+        
         $this->render('home/index', [
             'title' => 'Trang chủ - ' . APP_NAME,
             'latestStories' => $latestStories,
-            'featuredStories' => $featuredStories
+            'featuredStories' => $featuredStories,
+            'suggestedStories' => $suggestedStories
         ]);
     }
 }

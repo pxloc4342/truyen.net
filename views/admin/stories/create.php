@@ -50,7 +50,27 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label class="form-label">Ảnh bìa</label>
+                <label class="form-label">Ảnh bìa (chọn 1 trong 2 cách)</label>
+                <!-- Chọn ảnh có sẵn -->
+                <?php
+                $imageDir = __DIR__ . '/../../../assets/images/';
+                $imageWebPath = '/assets/images/';
+                $images = array_filter(scandir($imageDir), function($f) {
+                    return preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $f);
+                });
+                ?>
+                <select name="thumbnail_existing" class="form-select mb-2">
+                    <option value="">-- Chọn ảnh có sẵn --</option>
+                    <?php foreach ($images as $img): ?>
+                        <option value="<?= $imageWebPath . $img ?>" <?= (($_POST['thumbnail_existing'] ?? '') == ($imageWebPath . $img)) ? 'selected' : '' ?>><?= htmlspecialchars($img) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <div class="mb-2" style="max-height:100px; overflow:auto;">
+                    <?php foreach ($images as $img): ?>
+                        <img src="<?= $imageWebPath . $img ?>" alt="" style="height:40px; margin:2px; border:1px solid #ccc;">
+                    <?php endforeach; ?>
+                </div>
+                <div class="form-text">Hoặc tải ảnh mới:</div>
                 <input type="file" name="thumbnail" accept="image/*" class="form-control <?= isset($errors['thumbnail']) ? 'is-invalid' : '' ?>">
                 <?php if (isset($errors['thumbnail'])): ?>
                     <div class="invalid-feedback d-block"> <?= htmlspecialchars($errors['thumbnail']) ?> </div>

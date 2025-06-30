@@ -49,6 +49,9 @@ class AdminStoryController extends Controller {
                         $errors['thumbnail'] = 'Lỗi upload ảnh';
                     }
                 }
+            } else if (!empty($_POST['thumbnail_existing'])) {
+                // Nếu không upload mới, lấy ảnh có sẵn nếu có chọn
+                $thumbnail = $_POST['thumbnail_existing'];
             }
 
             if (empty($errors)) {
