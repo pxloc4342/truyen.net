@@ -18,4 +18,9 @@ class Chapter {
     public function create($data) {
         return $this->db->insert($this->table, $data);
     }
+
+    public function getMaxChapterNumber($story_id) {
+        $row = $this->db->fetch("SELECT MAX(chapter_number) as max_num FROM {$this->table} WHERE story_id = ?", [$story_id]);
+        return $row && $row['max_num'] !== null ? (int)$row['max_num'] : 0;
+    }
 } 

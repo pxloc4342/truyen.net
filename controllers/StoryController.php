@@ -14,17 +14,19 @@ class StoryController extends Controller {
     
     public function show($id) {
         $storyModel = new Story();
+        require_once MODELS_PATH . '/Chapter.php';
+        $chapterModel = new Chapter();
         $story = $storyModel->getById($id);
-        
         if (!$story) {
             $this->render('errors/404', [
                 'title' => 'Không tìm thấy truyện'
             ]);
             return;
         }
-        
+        $chapters = $chapterModel->getByStoryId($id);
         $this->render('stories/show', [
             'story' => $story,
+            'chapters' => $chapters,
             'title' => $story['title']
         ]);
     }
