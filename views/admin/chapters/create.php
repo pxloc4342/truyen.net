@@ -1,33 +1,28 @@
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0"><i class="fas fa-plus me-2"></i>Thêm chương mới cho truyện: <?= htmlspecialchars($story['title']) ?></h2>
-        <a href="<?= APP_URL ?>/admin/chapters/<?= $story['id'] ?>" class="btn btn-secondary">
-            <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách chương
-        </a>
-    </div>
-    <form method="POST" class="bg-white p-4 rounded shadow-sm">
+<div class="container mt-4">
+    <h2>Thêm Chapter mới</h2>
+    <form method="POST" action="<?= APP_URL ?>/admin/chapters/store">
         <div class="mb-3">
-            <label class="form-label">Tiêu đề chương <span class="text-danger">*</span></label>
-            <input type="text" name="title" class="form-control <?= isset($errors['title']) ? 'is-invalid' : '' ?>" value="<?= htmlspecialchars($_POST['title'] ?? '') ?>" required>
-            <?php if (isset($errors['title'])): ?>
-                <div class="invalid-feedback d-block"> <?= htmlspecialchars($errors['title']) ?> </div>
-            <?php endif; ?>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Số chương <span class="text-danger">*</span></label>
-            <input type="number" name="chapter_number" class="form-control <?= isset($errors['chapter_number']) ? 'is-invalid' : '' ?>" value="<?= htmlspecialchars($_POST['chapter_number'] ?? '') ?>" required>
-            <?php if (isset($errors['chapter_number'])): ?>
-                <div class="invalid-feedback d-block"> <?= htmlspecialchars($errors['chapter_number']) ?> </div>
-            <?php endif; ?>
+            <label for="story_id" class="form-label">Chọn truyện</label>
+            <select class="form-select" id="story_id" name="story_id" required>
+                <option value="">-- Chọn truyện --</option>
+                <?php if (!empty($stories)): ?>
+                    <?php foreach ($stories as $story): ?>
+                        <option value="<?= htmlspecialchars($story['id']) ?>">
+                            <?= htmlspecialchars($story['title']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
         </div>
         <div class="mb-3">
-            <label class="form-label">Nội dung chương</label>
-            <textarea name="content" class="form-control" rows="8"><?= htmlspecialchars($_POST['content'] ?? '') ?></textarea>
+            <label for="title" class="form-label">Tiêu đề chapter</label>
+            <input type="text" class="form-control" id="title" name="title" required>
         </div>
-        <div class="mt-4 d-flex justify-content-end">
-            <button type="submit" class="btn btn-success px-4">
-                <i class="fas fa-save me-1"></i> Lưu chương
-            </button>
+        <div class="mb-3">
+            <label for="content" class="form-label">Nội dung chapter</label>
+            <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
         </div>
+        <button type="submit" class="btn btn-primary">Thêm chapter</button>
+        <a href="<?= APP_URL ?>/admin/chapters" class="btn btn-secondary">Quay lại</a>
     </form>
 </div> 

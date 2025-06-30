@@ -12,13 +12,17 @@
                     <div class="swiper-slide">
                         <div class="story-card">
                             <?php if ($story['thumbnail']): ?>
-                                <img src="<?= APP_URL . $story['thumbnail'] ?>" 
-                                     class="card-img-top" 
-                                     alt="<?= htmlspecialchars($story['title']) ?>">
+                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                                    <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                                         class="card-img-top" 
+                                         alt="<?= htmlspecialchars($story['title']) ?>">
+                                </a>
                             <?php else: ?>
-                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-image fa-3x text-muted"></i>
-                                </div>
+                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                </a>
                             <?php endif; ?>
                             <div class="card-body">
                                 <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
@@ -88,13 +92,17 @@
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4" style="min-width:200px;max-width:220px;">
                     <div class="story-card">
                         <?php if ($story['thumbnail']): ?>
-                            <img src="<?= APP_URL . $story['thumbnail'] ?>" 
-                                 class="card-img-top" 
-                                 alt="<?= htmlspecialchars($story['title']) ?>">
+                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                                <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                                     class="card-img-top" 
+                                     alt="<?= htmlspecialchars($story['title']) ?>">
+                            </a>
                         <?php else: ?>
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
-                                <i class="fas fa-image fa-3x text-muted"></i>
-                            </div>
+                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            </a>
                         <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
@@ -141,13 +149,17 @@
             <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
                 <div class="story-card">
                     <?php if ($story['thumbnail']): ?>
-                        <img src="<?= APP_URL . $story['thumbnail'] ?>" 
-                             class="card-img-top" 
-                             alt="<?= htmlspecialchars($story['title']) ?>">
+                        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                            <img src="<?= APP_URL . $story['thumbnail'] ?>" 
+                                 class="card-img-top" 
+                                 alt="<?= htmlspecialchars($story['title']) ?>">
+                        </a>
                     <?php else: ?>
-                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
-                            <i class="fas fa-image fa-3x text-muted"></i>
-                        </div>
+                        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                            </div>
+                        </a>
                     <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>

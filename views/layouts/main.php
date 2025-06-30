@@ -70,7 +70,18 @@
                     
                     <!-- User Menu -->
                     <ul class="navbar-nav">
-                        <?php if (isset($_SESSION['user_id'])): ?>
+                        <?php if (isset($_SESSION['admin_id'])): ?>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-shield me-1"></i><?= htmlspecialchars($_SESSION['admin_username']) ?> (Admin)
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="<?= APP_URL ?>/admin/dashboard">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="<?= APP_URL ?>/admin/logout">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        <?php elseif (isset($_SESSION['user_id'])): ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                     <i class="fas fa-user-circle me-1"></i><?= htmlspecialchars($_SESSION['username']) ?>
@@ -226,6 +237,16 @@
       @media (max-width: 768px) {
         .footer-custom { border-radius: 0; }
         .footer-logo { font-size: 1.3rem; }
+      }
+      .navbar.bg-white {
+        background: linear-gradient(45deg, #667eea, #764ba2) !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .navbar .navbar-brand, .navbar .nav-link, .navbar .dropdown-item {
+        color: #fff !important;
+      }
+      .navbar .nav-link:hover, .navbar .nav-link.active {
+        color: #ffb300 !important;
       }
     </style>
     <script>

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // Entry point cho ứng dụng MVC
 session_start();
 
@@ -39,6 +42,7 @@ $router = new Router();
 $router->addRoute('/', 'HomeController@index');
 $router->addRoute('/truyen', 'StoryController@index');
 $router->addRoute('/truyen/{id}', 'StoryController@show');
+$router->addRoute('/truyen/{story_id}/chuong/{chapter_id}', 'StoryController@chapter');
 $router->addRoute('/the-loai', 'CategoryController@index');
 $router->addRoute('/the-loai/{id}', 'CategoryController@show');
 $router->addRoute('/tim-kiem', 'SearchController@index');
@@ -53,14 +57,15 @@ $router->addRoute('/admin/stories', 'AdminStoryController@index');
 $router->addRoute('/admin/stories/create', 'AdminStoryController@create');
 $router->addRoute('/admin/stories/edit/{id}', 'AdminStoryController@edit');
 $router->addRoute('/admin/stories/delete/{id}', 'AdminStoryController@delete');
-$router->addRoute('/admin/chapters/{story_id}', 'AdminChapterController@index');
-$router->addRoute('/admin/chapters/create/{story_id}', 'AdminChapterController@create');
-$router->addRoute('/admin/chapters/edit/{id}', 'AdminChapterController@edit');
-$router->addRoute('/admin/chapters/delete/{id}', 'AdminChapterController@delete');
 $router->addRoute('/admin/categories', 'AdminCategoryController@index');
 $router->addRoute('/admin/categories/create', 'AdminCategoryController@create');
 $router->addRoute('/admin/categories/edit/{id}', 'AdminCategoryController@edit');
 $router->addRoute('/admin/categories/delete/{id}', 'AdminCategoryController@delete');
+
+// Thêm route cho quản lý chapter
+$router->addRoute('/admin/chapters', 'AdminChapterController@index');
+$router->addRoute('/admin/chapters/create', 'AdminChapterController@create');
+$router->addRoute('/admin/chapters/store', 'AdminChapterController@store');
 
 // Xử lý request
 $router->dispatch();

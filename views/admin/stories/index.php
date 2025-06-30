@@ -67,9 +67,6 @@
                                 <a href="<?= APP_URL ?>/admin/stories/delete/<?= $story['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa truyện này?');">
                                     <i class="fas fa-trash"></i>
                                 </a>
-                                <a href="<?= APP_URL ?>/admin/chapters/<?= $story['id'] ?>" class="btn btn-sm btn-info me-1">
-                                    <i class="fas fa-list"></i> Quản lý chương
-                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
