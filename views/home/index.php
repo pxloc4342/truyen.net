@@ -3,7 +3,6 @@
     <div class="container">
         <div class="section-header">
             <h2>Truyện nổi bật</h2>
-            <p>Những bộ truyện được yêu thích nhất</p>
         </div>
         <div class="featured-slider">
             <div class="swiper featured-swiper">
@@ -75,7 +74,6 @@
         <div class="section-header d-flex justify-content-between align-items-center">
             <div>
                 <h2 class="mb-0">Truyện đề xuất</h2>
-                <p class="mb-0">Gợi ý truyện hấp dẫn dành cho bạn</p>
             </div>
             <a href="<?= APP_URL ?>/truyen" class="btn btn-outline-primary">
                 <i class="fas fa-list me-1"></i>Xem tất cả
@@ -132,9 +130,8 @@
 <!-- Latest Stories Section -->
 <section class="py-5">
     <div class="container">
-        <div class="section-header">
-            <h2>Danh sách truyện mới cập nhật</h2>
-            <p>Những chương mới nhất vừa được đăng</p>
+        <div class="section-header text-center">
+            <h2 class="mb-0">Danh sách truyện mới cập nhật</h2>
         </div>
         <div class="row">
             <?php foreach ($latestStories as $story): ?>
@@ -178,8 +175,8 @@
             <?php endforeach; ?>
         </div>
         <div class="text-center mt-4">
-            <a href="<?= APP_URL ?>/truyen" class="btn btn-primary btn-lg">
-                <i class="fas fa-list me-2"></i>Xem thêm
+            <a href="<?= APP_URL ?>/truyen" class="btn-gradient">
+                <i class="fas fa-list me-1"></i>Xem thêm
             </a>
         </div>
     </div>
@@ -245,12 +242,27 @@ document.querySelectorAll('.story-card').forEach(card => {
     observer.observe(card);
 });
 
-// Nút cuộn ngang cho suggested-scroll
+// Nút cuộn ngang cho suggested-scroll, có hiệu ứng lặp lại
 const scrollRow = document.querySelector('.suggested-scroll');
 const btnLeft = document.querySelector('.scroll-left');
 const btnRight = document.querySelector('.scroll-right');
 if (scrollRow && btnLeft && btnRight) {
-    btnLeft.onclick = () => scrollRow.scrollBy({left: -220, behavior: 'smooth'});
-    btnRight.onclick = () => scrollRow.scrollBy({left: 220, behavior: 'smooth'});
+    btnLeft.onclick = () => {
+        if (scrollRow.scrollLeft <= 0) {
+            // Cuộn về cuối nếu đang ở đầu
+            scrollRow.scrollTo({left: scrollRow.scrollWidth, behavior: 'smooth'});
+        } else {
+            scrollRow.scrollBy({left: -220, behavior: 'smooth'});
+        }
+    };
+    btnRight.onclick = () => {
+        const maxScroll = scrollRow.scrollWidth - scrollRow.clientWidth - 5;
+        if (scrollRow.scrollLeft >= maxScroll) {
+            // Cuộn về đầu nếu đang ở cuối
+            scrollRow.scrollTo({left: 0, behavior: 'smooth'});
+        } else {
+            scrollRow.scrollBy({left: 220, behavior: 'smooth'});
+        }
+    };
 }
 </script> 

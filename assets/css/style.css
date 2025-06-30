@@ -851,4 +851,23 @@ footer {
     .social-login {
         flex-direction: column;
     }
+}
+
+.btn-gradient {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: #fff !important;
+    border: none;
+    border-radius: 30px;
+    padding: 0.75rem 2.2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 18px rgba(102,126,234,0.10);
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+}
+.btn-gradient:hover, .btn-gradient:focus {
+    background: linear-gradient(45deg, #5a6fd8, #6a4c93);
+    color: #fff !important;
+    transform: translateY(-2px) scale(1.04);
+    text-decoration: none;
 } 
