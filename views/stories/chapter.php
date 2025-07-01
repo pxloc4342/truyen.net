@@ -1,6 +1,14 @@
 <?php /* Trang đọc chương truyện hiện đại, đẹp, dark mode, responsive */ ?>
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
 <style>
+body, html {
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+body.dark-mode, html.dark-mode {
+    background: #181a1b !important;
+}
 .chapter-title {
     font-family: 'Merriweather', 'Georgia', 'Roboto Slab', serif;
     font-size: 2.1rem;
@@ -60,8 +68,8 @@
     font-family: 'Merriweather', 'Open Sans', 'Georgia', serif;
     font-size: 19px;
     line-height: 1.85;
-    color: #333;
-    background: #fff;
+    color: #e0e0e0;
+    background: #181a1b;
     border-radius: 12px;
     box-shadow: 0 2px 16px rgba(102,126,234,0.04);
     padding: 2.2rem 1.5rem;
@@ -69,7 +77,13 @@
     animation: fadeIn 0.7s;
 }
 .chapter-content p { margin-bottom: 1.2em; }
-.chapter-content img { max-width: 100%; height: auto; display: block; margin: 1.2em auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.chapter-content img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto 0.5em auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
 
 /* Dark mode */
 body.dark-mode, .chapter-content.dark-mode {
@@ -114,16 +128,56 @@ body.dark-mode .chapter-content img { box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
     color: #fff;
     border: none;
     border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
     font-size: 1.5rem;
     box-shadow: 0 2px 10px rgba(102,126,234,0.18);
     transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 #scrollToTopBtn:hover { background: #764ba2; }
 
 /* Dark mode for scroll to top */
 body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
+
+.container, .chapter-content {
+    background: transparent !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+.chapter-images {
+    font-size: 0;
+    width: 70vw;
+    max-width: 70vw;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+}
+.chapter-images img {
+    font-size: initial;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+@media (max-width: 900px) {
+    .chapter-images, .chapter-images img {
+        width: 100vw;
+        max-width: 100vw;
+    }
+}
 </style>
 
 <div class="container py-3">
@@ -157,9 +211,13 @@ body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
             Chương sau <i class="fas fa-angle-right ms-1"></i>
         </a>
     </div>
-    <div class="chapter-content fade-in" id="chapterContent">
-        <?= $chapterContent ?>
-    </div>
+    <?php if (!empty($chapterImages)): ?>
+        <div class="chapter-images"><?php foreach ($chapterImages as $img): ?><img src="/WebTruyenTranh<?= htmlspecialchars($img['image_path']) ?>" alt="Trang truyện"><?php endforeach; ?></div>
+    <?php else: ?>
+        <div class="chapter-content fade-in" id="chapterContent">
+            <?= $chapterContent ?>
+        </div>
+    <?php endif; ?>
     <div class="chapter-nav py-2 bg-white fade-in justify-content-center d-flex" style="margin-top: -1.5rem;">
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $prevChapter ? $prevChapter['id'] : $chapter['id'] ?>" class="btn btn-outline-primary<?= !$prevChapter ? ' disabled' : '' ?>">
             <i class="fas fa-angle-left me-1"></i> Chương trước

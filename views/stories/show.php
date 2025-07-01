@@ -53,7 +53,8 @@
         <button class="btn btn-link p-0 mt-1" id="toggleDesc">Xem thêm...</button>
       </div>
       <div class="d-flex gap-2 mb-3">
-        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/1" class="btn btn-primary">
+        <?php $firstChapterId = !empty($chapters) ? $chapters[0]['id'] : 1; ?>
+        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $firstChapterId ?>" class="btn btn-primary">
           <i class="fas fa-book-open me-1"></i> Đọc từ đầu
         </a>
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/moi-nhat" class="btn btn-outline-primary">

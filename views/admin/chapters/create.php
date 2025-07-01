@@ -1,6 +1,6 @@
 <div class="container mt-4">
     <h2>Thêm Chapter mới</h2>
-    <form method="POST" action="<?= APP_URL ?>/admin/chapters/store">
+    <form method="POST" action="<?= APP_URL ?>/admin/chapters/store" enctype="multipart/form-data">
         <?php if (isset($selected_story) && $selected_story): ?>
             <div class="mb-3">
                 <label class="form-label">Truyện</label>
@@ -33,6 +33,11 @@
         <div class="mb-3">
             <label for="chapter_number" class="form-label">Số thứ tự chương</label>
             <input type="number" class="form-control" id="chapter_number" name="chapter_number" min="1" step="1" value="<?= isset($default_chapter_number) ? $default_chapter_number : 1 ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="images" class="form-label">Ảnh truyện (có thể chọn nhiều ảnh)</label>
+            <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple>
+            <small class="form-text text-muted">Chọn các ảnh theo đúng thứ tự trang truyện.</small>
         </div>
         <button type="submit" class="btn btn-primary">Thêm chapter</button>
         <a href="<?= APP_URL ?>/admin/chapters" class="btn btn-secondary">Quay lại</a>

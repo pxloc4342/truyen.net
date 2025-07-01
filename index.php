@@ -67,6 +67,8 @@ $router->addRoute('/admin/chapters', 'AdminChapterController@index');
 $router->addRoute('/admin/chapters/create', 'AdminChapterController@create');
 $router->addRoute('/admin/chapters/store', 'AdminChapterController@store');
 $router->addRoute('/admin/chapters/story/{story_id}', 'AdminChapterController@listChapters');
+$router->addRoute('/admin/chapters/edit/{id}', 'AdminChapterController@edit');
+$router->addRoute('/admin/chapters/update/{id}', 'AdminChapterController@update');
 
 // Xử lý request
 $router->dispatch();

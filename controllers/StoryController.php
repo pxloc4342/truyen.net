@@ -34,8 +34,10 @@ class StoryController extends Controller {
     public function chapter($story_id, $chapter_id) {
         require_once MODELS_PATH . '/Story.php';
         require_once MODELS_PATH . '/Chapter.php';
+        require_once MODELS_PATH . '/ChapterImage.php';
         $storyModel = new Story();
         $chapterModel = new Chapter();
+        $chapterImageModel = new ChapterImage();
         $story = $storyModel->getById($story_id);
         $chapter = $chapterModel->getById($chapter_id);
         if (!$story || !$chapter) {
@@ -54,13 +56,16 @@ class StoryController extends Controller {
                 break;
             }
         }
+        // Lấy danh sách ảnh chapter
+        $chapterImages = $chapterImageModel->getImagesByChapter($chapter_id);
         $this->render('stories/chapter', [
             'story' => $story,
             'chapter' => $chapter,
             'chapterContent' => $chapterContent,
             'prevChapter' => $prevChapter,
             'nextChapter' => $nextChapter,
-            'chapters' => $chapters
+            'chapters' => $chapters,
+            'chapterImages' => $chapterImages
         ]);
     }
 } 
