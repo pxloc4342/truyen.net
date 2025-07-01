@@ -5,19 +5,19 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
+                <th style="width:110px; text-align:center;">Số thứ tự</th>
                 <th>Tiêu đề</th>
-                <th>Số thứ tự</th>
-                <th>Hành động</th>
+                <th style="width:170px;">Hành động</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($chapters)): ?>
-                <?php foreach ($chapters as $chapter): ?>
+                <?php foreach (array_reverse($chapters) as $chapter): ?>
                     <tr>
-                        <td><?= htmlspecialchars($chapter['id']) ?></td>
+                        <td style="text-align:center; vertical-align:middle;">
+                            <?= (int)$chapter['chapter_number'] ?>
+                        </td>
                         <td><?= htmlspecialchars($chapter['title']) ?></td>
-                        <td><?= htmlspecialchars($chapter['chapter_number']) ?></td>
                         <td>
                             <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $chapter['id'] ?>" class="btn btn-primary btn-sm" target="_blank">Đọc</a>
                             <a href="<?= APP_URL ?>/admin/chapters/edit/<?= $chapter['id'] ?>" class="btn btn-warning btn-sm ms-1">Sửa</a>
@@ -26,7 +26,7 @@
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
-                <tr><td colspan="4" class="text-center">Chưa có chapter nào.</td></tr>
+                <tr><td colspan="3" class="text-center">Chưa có chapter nào.</td></tr>
             <?php endif; ?>
         </tbody>
     </table>

@@ -59,7 +59,8 @@ class StoryController extends Controller {
             'chapter' => $chapter,
             'chapterContent' => $chapterContent,
             'prevChapter' => $prevChapter,
-            'nextChapter' => $nextChapter
+            'nextChapter' => $nextChapter,
+            'chapters' => $chapters
         ]);
     }
 } 

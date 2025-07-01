@@ -8,7 +8,7 @@ class Story {
     }
     
     public function getAll($limit = null, $offset = 0) {
-        $sql = "SELECT * FROM {$this->table} ORDER BY created_at DESC";
+        $sql = "SELECT * FROM {$this->table} ORDER BY id ASC";
         if ($limit) {
             $sql .= " LIMIT {$limit} OFFSET {$offset}";
         }

@@ -886,4 +886,107 @@ footer {
 }
 .navbar-nav .dropdown-menu .dropdown-divider {
     border-top: 1px solid #e0e0e0;
+}
+
+/* Sửa menu admin: các mục không bị xuống dòng */
+.admin-sidebar .nav-link, .admin-sidebar .nav-item {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Ngăn menu admin bị xuống dòng, icon và text cùng hàng */
+.sidebar .nav-link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 4px !important;
+}
+.sidebar .nav-link i {
+    min-width: 22px;
+    text-align: center;
+}
+
+.sidebar .nav-link.active, .sidebar .nav-link:active, .sidebar .nav-link:focus {
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding-left: 4px !important;
+    margin-left: 0 !important;
+}
+
+/* ===== CUSTOM DROPDOWN MENU FOR CHAPTER LIST ===== */
+.dropdown-menu {
+    background: #fff !important;
+    color: #222 !important;
+    border: none;
+    box-shadow: 0 4px 24px rgba(102,126,234,0.13);
+}
+.dropdown-item {
+    color: #222 !important;
+    background: transparent !important;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+}
+.dropdown-item.active,
+.dropdown-item.fw-bold,
+.dropdown-item.text-primary {
+    color: #2d5be3 !important;
+    background: #e3eafe !important;
+    font-weight: 700;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+    background: #f0f0f0 !important;
+    color: #222 !important;
+}
+
+body.dark-mode .dropdown-menu {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+}
+body.dark-mode .dropdown-item {
+    color: #e0e0e0 !important;
+    background: transparent !important;
+}
+body.dark-mode .dropdown-item.active,
+body.dark-mode .dropdown-item.fw-bold,
+body.dark-mode .dropdown-item.text-primary {
+    color: #7ecfff !important;
+    background: #2323a7 !important;
+}
+body.dark-mode .dropdown-item:hover, body.dark-mode .dropdown-item:focus {
+    background: #2323a7 !important;
+    color: #fff !important;
+}
+
+/* ===== PADDING FOR ADMIN DASHBOARD TABLE CARDS ===== */
+.table-card {
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(102,126,234,0.07);
+    background: #fff;
+    padding: 0 0 18px 0;
+    margin-bottom: 12px;
+}
+.table-card .card-header {
+    border-radius: 16px 16px 0 0;
+    padding: 20px 28px 12px 28px;
+    background: #fff;
+}
+.table-card .card-body {
+    padding: 12px 28px 18px 28px;
+}
+.table-card .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+    background: transparent;
+}
+@media (max-width: 600px) {
+    .table-card .card-header, .table-card .card-body {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 } 

@@ -133,13 +133,26 @@ body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
     <div class="chapter-story-title fade-in">
         <?= htmlspecialchars($chapter['title']) ?>
     </div>
-    <div class="chapter-nav sticky-top py-2 bg-white fade-in" style="top: 0; z-index: 10;">
+    <div class="chapter-nav sticky-top py-2 bg-white fade-in justify-content-center d-flex" style="top: 0; z-index: 10;">
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $prevChapter ? $prevChapter['id'] : $chapter['id'] ?>" class="btn btn-outline-primary<?= !$prevChapter ? ' disabled' : '' ?>">
             <i class="fas fa-angle-left me-1"></i> Chương trước
         </a>
-        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-list">
-            <i class="fas fa-list me-1"></i> Danh sách chương
-        </a>
+        <div class="dropdown d-inline-block" style="margin: 0 8px;">
+            <button class="btn btn-list dropdown-toggle px-4 py-2" type="button" id="chapterDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 30px; box-shadow: 0 2px 8px rgba(102,126,234,0.10); font-weight:600;">
+                <i class="fas fa-list me-1"></i> Danh sách chương
+            </button>
+            <ul class="dropdown-menu text-center" aria-labelledby="chapterDropdown" style="max-height:320px;overflow-y:auto;min-width:170px;border-radius:18px;box-shadow:0 4px 24px rgba(102,126,234,0.13);left:50%;transform:translateX(-50%);">
+                <?php if (!empty($chapters)): ?>
+                    <?php foreach ($chapters as $ch): ?>
+                        <li>
+                            <a class="dropdown-item py-2<?= $ch['id'] == $chapter['id'] ? ' active fw-bold text-primary' : '' ?>" href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $ch['id'] ?>" style="border-radius:12px;transition:background 0.2s;">
+                                Chương <?= (int)$ch['chapter_number'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
+        </div>
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $nextChapter ? $nextChapter['id'] : $chapter['id'] ?>" class="btn btn-outline-primary<?= !$nextChapter ? ' disabled' : '' ?>">
             Chương sau <i class="fas fa-angle-right ms-1"></i>
         </a>
@@ -147,13 +160,26 @@ body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
     <div class="chapter-content fade-in" id="chapterContent">
         <?= $chapterContent ?>
     </div>
-    <div class="chapter-nav py-2 bg-white fade-in" style="margin-top: -1.5rem;">
+    <div class="chapter-nav py-2 bg-white fade-in justify-content-center d-flex" style="margin-top: -1.5rem;">
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $prevChapter ? $prevChapter['id'] : $chapter['id'] ?>" class="btn btn-outline-primary<?= !$prevChapter ? ' disabled' : '' ?>">
             <i class="fas fa-angle-left me-1"></i> Chương trước
         </a>
-        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-list">
-            <i class="fas fa-list me-1"></i> Danh sách chương
-        </a>
+        <div class="dropdown d-inline-block" style="margin: 0 8px;">
+            <button class="btn btn-list dropdown-toggle px-4 py-2" type="button" id="chapterDropdown2" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 30px; box-shadow: 0 2px 8px rgba(102,126,234,0.10); font-weight:600;">
+                <i class="fas fa-list me-1"></i> Danh sách chương
+            </button>
+            <ul class="dropdown-menu text-center" aria-labelledby="chapterDropdown2" style="max-height:320px;overflow-y:auto;min-width:170px;border-radius:18px;box-shadow:0 4px 24px rgba(102,126,234,0.13);left:50%;transform:translateX(-50%);">
+                <?php if (!empty($chapters)): ?>
+                    <?php foreach ($chapters as $ch): ?>
+                        <li>
+                            <a class="dropdown-item py-2<?= $ch['id'] == $chapter['id'] ? ' active fw-bold text-primary' : '' ?>" href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $ch['id'] ?>" style="border-radius:12px;transition:background 0.2s;">
+                                Chương <?= (int)$ch['chapter_number'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </ul>
+        </div>
         <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>/chuong/<?= $nextChapter ? $nextChapter['id'] : $chapter['id'] ?>" class="btn btn-outline-primary<?= !$nextChapter ? ' disabled' : '' ?>">
             Chương sau <i class="fas fa-angle-right ms-1"></i>
         </a>

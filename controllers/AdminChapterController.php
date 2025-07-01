@@ -6,6 +6,8 @@ class AdminChapterController extends Controller {
         require_once MODELS_PATH . '/Story.php';
         $storyModel = new Story();
         $stories = $storyModel->getAll();
+        // Sắp xếp theo ID tăng dần
+        usort($stories, function($a, $b) { return $a['id'] <=> $b['id']; });
         $this->render('admin/chapters/stories', [
             'stories' => $stories
         ]);

@@ -3,20 +3,22 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
+                <th style="width:70px; text-align:center;">ID</th>
                 <th>Tiêu đề</th>
                 <th>Tác giả</th>
-                <th>Hành động</th>
+                <th style="width:170px; text-align:center;">Hành động</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($stories)): ?>
                 <?php foreach ($stories as $story): ?>
                     <tr>
-                        <td><?= htmlspecialchars($story['id']) ?></td>
+                        <td style="text-align:center; vertical-align:middle;">
+                            <?= htmlspecialchars($story['id']) ?>
+                        </td>
                         <td><?= htmlspecialchars($story['title']) ?></td>
                         <td><?= htmlspecialchars($story['author']) ?></td>
-                        <td>
+                        <td style="text-align:center; vertical-align:middle;">
                             <a href="<?= APP_URL ?>/admin/chapters/story/<?= $story['id'] ?>" class="btn btn-primary btn-sm">Xem chapter</a>
                         </td>
                     </tr>
