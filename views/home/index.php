@@ -1,9 +1,8 @@
 <!-- Featured Stories Slider -->
 <section class="py-5 bg-light">
-    <div class="container">
+    <div class="container-fluid">
         <div class="section-header">
             <h2>Truyện nổi bật</h2>
-            <p>Những bộ truyện được yêu thích nhất</p>
         </div>
         <div class="featured-slider">
             <div class="swiper featured-swiper">
@@ -29,15 +28,12 @@
                                 <p class="author">
                                     <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
                                 </p>
-                                <p class="card-text">
-                                    <?= htmlspecialchars(substr($story['description'], 0, 100)) ?>...
-                                </p>
                                 <div class="category-pills">
                                     <?php
                                     $categories = $this->db->fetchAll(
                                         "SELECT c.id, c.name FROM categories c 
                                          JOIN story_category sc ON c.id = sc.category_id 
-                                         WHERE sc.story_id = ? LIMIT 3", 
+                                         WHERE sc.story_id = ? LIMIT 2", 
                                         [$story['id']]
                                     );
                                     foreach ($categories as $category):
@@ -47,9 +43,11 @@
                                     </span>
                                     <?php endforeach; ?>
                                 </div>
-                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-primary w-100">
-                                    <i class="fas fa-book-open me-2"></i>Đọc ngay
-                                </a>
+                                <div class="read-btn-wrapper">
+                                    <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-primary w-100">
+                                        <i class="fas fa-book-open me-2"></i>Đọc ngay
+                                    </a>
+                                </div>
                             </div>
                             <div class="status-badge status-<?= $story['status'] ?>">
                                 <?php
@@ -79,7 +77,6 @@
         <div class="section-header d-flex justify-content-between align-items-center">
             <div>
                 <h2 class="mb-0">Truyện đề xuất</h2>
-                <p class="mb-0">Gợi ý truyện hấp dẫn dành cho bạn</p>
             </div>
             <a href="<?= APP_URL ?>/truyen" class="btn btn-outline-primary">
                 <i class="fas fa-list me-1"></i>Xem tất cả
@@ -105,14 +102,18 @@
                             </a>
                         <?php endif; ?>
                         <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                            <p class="author">
-                                <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
-                            </p>
+                            <div class="info-group">
+                                <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                                <p class="author">
+                                    <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                                </p>
+                            </div>
                             <div class="d-flex justify-content-between align-items-center">
-                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-book-open me-1"></i>Đọc
-                                </a>
+                                <div class="read-btn-wrapper">
+                                    <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-book-open me-1"></i>Đọc
+                                    </a>
+                                </div>
                                 <small class="text-muted">
                                     <i class="fas fa-eye me-1"></i><?= number_format($story['views']) ?>
                                 </small>
@@ -142,7 +143,6 @@
     <div class="container">
         <div class="section-header">
             <h2>Danh sách truyện mới cập nhật</h2>
-            <p>Những chương mới nhất vừa được đăng</p>
         </div>
         <div class="row">
             <?php foreach ($latestStories as $story): ?>
@@ -162,14 +162,18 @@
                         </a>
                     <?php endif; ?>
                     <div class="card-body">
-                        <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                        <p class="author">
-                            <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
-                        </p>
+                        <div class="info-group">
+                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                            <p class="author">
+                                <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                            </p>
+                        </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-book-open me-1"></i>Đọc
-                            </a>
+                            <div class="read-btn-wrapper">
+                                <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-book-open me-1"></i>Đọc
+                                </a>
+                            </div>
                             <small class="text-muted">
                                 <i class="fas fa-eye me-1"></i><?= number_format($story['views']) ?>
                             </small>
@@ -210,9 +214,12 @@
 // Initialize Swiper for Featured Stories
 document.addEventListener('DOMContentLoaded', function() {
     const swiper = new Swiper('.featured-swiper', {
-        slidesPerView: 1,
-        spaceBetween: 30,
+        slidesPerView: 5,
+        slidesPerGroup: 1,
+        spaceBetween: 4,
         loop: true,
+        loopedSlides: 10,
+        centeredSlides: false,
         autoplay: {
             delay: 5000,
             disableOnInteraction: false,
@@ -228,13 +235,20 @@ document.addEventListener('DOMContentLoaded', function() {
         breakpoints: {
             640: {
                 slidesPerView: 2,
+                slidesPerGroup: 1,
             },
             768: {
                 slidesPerView: 3,
+                slidesPerGroup: 1,
             },
             1024: {
                 slidesPerView: 4,
+                slidesPerGroup: 1,
             },
+            1200: {
+                slidesPerView: 5,
+                slidesPerGroup: 1,
+            }
         }
     });
 });
@@ -262,7 +276,39 @@ const scrollRow = document.querySelector('.suggested-scroll');
 const btnLeft = document.querySelector('.scroll-left');
 const btnRight = document.querySelector('.scroll-right');
 if (scrollRow && btnLeft && btnRight) {
-    btnLeft.onclick = () => scrollRow.scrollBy({left: -220, behavior: 'smooth'});
-    btnRight.onclick = () => scrollRow.scrollBy({left: 220, behavior: 'smooth'});
+    btnLeft.onclick = () => scrollRow.scrollBy({left: -190, behavior: 'smooth'});
+    btnRight.onclick = () => scrollRow.scrollBy({left: 190, behavior: 'smooth'});
 }
+
+// Initialize Swiper for Latest Stories
+const latestSwiper = new Swiper('.latest-swiper', {
+    slidesPerView: 6,
+    slidesPerGroup: 1,
+    spaceBetween: 16,
+    loop: true,
+    loopedSlides: 12,
+    centeredSlides: false,
+    navigation: {
+        nextEl: '.latest-swiper .swiper-button-next',
+        prevEl: '.latest-swiper .swiper-button-prev',
+    },
+    pagination: {
+        el: '.latest-swiper .swiper-pagination',
+        clickable: true,
+    },
+    breakpoints: {
+        640: {
+            slidesPerView: 2,
+        },
+        768: {
+            slidesPerView: 3,
+        },
+        1024: {
+            slidesPerView: 4,
+        },
+        1200: {
+            slidesPerView: 6,
+        }
+    }
+});
 </script> 
