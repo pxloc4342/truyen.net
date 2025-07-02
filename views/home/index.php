@@ -64,8 +64,8 @@
                     <?php endforeach; ?>
                 </div>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
         </div>
     </div>
@@ -213,16 +213,18 @@
 <script>
 // Initialize Swiper for Featured Stories
 document.addEventListener('DOMContentLoaded', function() {
+    // Kiểm tra số lượng slide
+    const slideCount = document.querySelectorAll('.featured-swiper .swiper-slide').length;
+    console.log('Số lượng slide truyện nổi bật:', slideCount);
     const swiper = new Swiper('.featured-swiper', {
         slidesPerView: 5,
         slidesPerGroup: 1,
         spaceBetween: 4,
         loop: true,
-        loopedSlides: 10,
-        centeredSlides: false,
         autoplay: {
-            delay: 5000,
+            delay: 3000,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
         },
         pagination: {
             el: '.swiper-pagination',
@@ -233,22 +235,10 @@ document.addEventListener('DOMContentLoaded', function() {
             prevEl: '.swiper-button-prev',
         },
         breakpoints: {
-            640: {
-                slidesPerView: 2,
-                slidesPerGroup: 1,
-            },
-            768: {
-                slidesPerView: 3,
-                slidesPerGroup: 1,
-            },
-            1024: {
-                slidesPerView: 4,
-                slidesPerGroup: 1,
-            },
-            1200: {
-                slidesPerView: 5,
-                slidesPerGroup: 1,
-            }
+            640: { slidesPerView: 2, slidesPerGroup: 1 },
+            768: { slidesPerView: 3, slidesPerGroup: 1 },
+            1024: { slidesPerView: 4, slidesPerGroup: 1 },
+            1200: { slidesPerView: 5, slidesPerGroup: 1 }
         }
     });
 });
@@ -310,5 +300,34 @@ const latestSwiper = new Swiper('.latest-swiper', {
             slidesPerView: 6,
         }
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing Swiper for featured-swiper ...
+    const suggestedSwiper = new Swiper('.suggested-swiper', {
+        slidesPerView: 5,
+        slidesPerGroup: 1,
+        spaceBetween: 4,
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        pagination: {
+            el: '.suggested-swiper .swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.suggested-swiper .swiper-button-next',
+            prevEl: '.suggested-swiper .swiper-button-prev',
+        },
+        breakpoints: {
+            640: { slidesPerView: 2, slidesPerGroup: 1 },
+            768: { slidesPerView: 3, slidesPerGroup: 1 },
+            1024: { slidesPerView: 4, slidesPerGroup: 1 },
+            1200: { slidesPerView: 5, slidesPerGroup: 1 }
+        }
+    });
 });
 </script> 

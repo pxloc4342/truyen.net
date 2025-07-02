@@ -240,12 +240,7 @@ body {
 }
 
 .featured-slider .swiper-slide {
-    /* height: 100%; */
-}
-
-.featured-slider .swiper-wrapper {
-    height: 440px;
-    overflow: visible !important;
+    display: block;
 }
 
 .swiper-pagination-bullet {
@@ -256,24 +251,47 @@ body {
     background: #764ba2;
 }
 
-.swiper-button-next,
-.swiper-button-prev {
-    color: #667eea;
+.swiper-button-prev,
+.swiper-button-next {
+    z-index: 10 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 @media (max-width: 1200px) {
     .featured-slider .swiper-slide {
-        width: 20% !important;
+        width: unset !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        flex: unset !important;
+        flex-basis: unset !important;
+        flex-grow: unset !important;
+        flex-shrink: unset !important;
+        height: unset !important;
     }
 }
 @media (max-width: 900px) {
     .featured-slider .swiper-slide {
-        width: 25% !important;
+        width: unset !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        flex: unset !important;
+        flex-basis: unset !important;
+        flex-grow: unset !important;
+        flex-shrink: unset !important;
+        height: unset !important;
     }
 }
 @media (max-width: 600px) {
     .featured-slider .swiper-slide {
-        width: 50% !important;
+        width: unset !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        flex: unset !important;
+        flex-basis: unset !important;
+        flex-grow: unset !important;
+        flex-shrink: unset !important;
+        height: unset !important;
     }
 }
 
@@ -1054,4 +1072,18 @@ body.dark-mode .dropdown-item:hover, body.dark-mode .dropdown-item:focus {
     line-height: 1.1;
     flex-shrink: unset !important;
     flex-grow: unset !important;
+}
+
+.suggested-slider .swiper-slide {
+    display: block;
+    width: unset !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    flex: unset !important;
+    flex-basis: unset !important;
+    flex-grow: unset !important;
+    flex-shrink: unset !important;
+    height: unset !important;
+    margin: 0 !important;
+    padding: 0 !important;
 } 
