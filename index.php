@@ -46,6 +46,8 @@ $router->addRoute('/truyen/{story_id}/chuong/{chapter_id}', 'StoryController@cha
 $router->addRoute('/the-loai', 'CategoryController@index');
 $router->addRoute('/the-loai/{id}', 'CategoryController@show');
 $router->addRoute('/tim-kiem', 'SearchController@index');
+$router->addRoute('/tim-kiem/ajax', 'SearchController@ajax');
+$router->addRoute('/tim-kiem/autocomplete', 'SearchController@autocomplete');
 $router->addRoute('/dang-nhap', 'AuthController@login');
 $router->addRoute('/dang-ky', 'AuthController@register');
 $router->addRoute('/dang-xuat', 'AuthController@logout');

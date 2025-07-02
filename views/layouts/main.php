@@ -24,7 +24,7 @@
     <!-- Header -->
     <header class="header">
         <!-- Top Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, #2D82B5 0%, #53A6D8 100%) !important;">
             <div class="container">
                 <!-- Logo -->
                 <a class="navbar-brand fw-bold text-primary" href="<?= APP_URL ?>/">

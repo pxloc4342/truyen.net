@@ -130,7 +130,7 @@
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <!-- Top Navbar -->
-                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm" style="background: linear-gradient(90deg, #2D82B5 0%, #53A6D8 100%) !important;">
                     <div class="container-fluid">
                         <span class="navbar-brand">Dashboard</span>
                         <div class="navbar-nav ms-auto">
