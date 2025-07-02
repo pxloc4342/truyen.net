@@ -86,7 +86,7 @@
             <button class="scroll-btn scroll-left btn btn-light position-absolute top-50 start-0 translate-middle-y shadow" style="z-index:2;" title="Trượt sang trái"><i class="fas fa-chevron-left"></i></button>
             <div class="suggested-scroll row flex-nowrap overflow-auto pb-2" style="scroll-behavior:smooth;">
                 <?php foreach ($suggestedStories as $story): ?>
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4" style="min-width:200px;max-width:220px;">
+                <div class="col-lg-3 col-md-3 col-sm-4 col-6 mb-4" style="min-width:227px;max-width:227px;">
                     <div class="story-card">
                         <?php if ($story['thumbnail']): ?>
                             <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">
@@ -102,11 +102,24 @@
                             </a>
                         <?php endif; ?>
                         <div class="card-body">
-                            <div class="info-group">
-                                <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                                <p class="author">
-                                    <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
-                                </p>
+                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
+                            <p class="author mb-1">
+                                <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
+                            </p>
+                            <div class="category-pills mb-2">
+                                <?php
+                                $categories = $this->db->fetchAll(
+                                    "SELECT c.id, c.name FROM categories c 
+                                     JOIN story_category sc ON c.id = sc.category_id 
+                                     WHERE sc.story_id = ? LIMIT 2",
+                                    [$story['id']]
+                                );
+                                foreach ($categories as $category):
+                                ?>
+                                <span class="category-pill">
+                                    <?= htmlspecialchars($category['name']) ?>
+                                </span>
+                                <?php endforeach; ?>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="read-btn-wrapper">
@@ -202,12 +215,113 @@
 </section>
 
 <style>
-.suggested-scroll::-webkit-scrollbar { height: 8px; }
-.suggested-scroll::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
-.scroll-btn { width: 38px; height: 38px; border-radius: 50%; opacity: 0.85; }
-.scroll-btn:active { opacity: 1; }
-@media (max-width: 768px) {
-    .scroll-btn { display: none !important; }
+.suggested-slider {
+    margin-top: 1.5rem;
+}
+.suggested-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(102,126,234,0.10);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    min-height: 320px;
+    transition: box-shadow 0.2s;
+}
+.suggested-card:hover {
+    box-shadow: 0 8px 32px rgba(102,126,234,0.18);
+}
+.suggested-thumb {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.suggested-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px 16px 0 0;
+    transition: transform 0.3s;
+}
+.suggested-card:hover .suggested-thumb img {
+    transform: scale(1.04);
+}
+.suggested-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #222;
+    text-align: center;
+    margin: 1rem 0 0.5rem 0;
+    padding: 0 10px;
+    line-height: 1.3;
+    min-height: 2.6em;
+    max-height: 2.6em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.suggested-swiper .swiper-slide {
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+.suggested-swiper {
+    padding-bottom: 32px;
+}
+.suggested-swiper .swiper-button-prev,
+.suggested-swiper .swiper-button-next {
+    color: #3b5bdb;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(102,126,234,0.10);
+    width: 38px;
+    height: 38px;
+    top: 40%;
+    transition: background 0.2s;
+}
+.suggested-swiper .swiper-button-prev:hover,
+.suggested-swiper .swiper-button-next:hover {
+    background: #e9ecef;
+}
+.suggested-swiper .swiper-button-prev:after,
+.suggested-swiper .swiper-button-next:after {
+    font-size: 1.3rem;
+}
+.suggested-swiper .swiper-wrapper {
+    gap: 20px;
+}
+.suggested-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+.suggested-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+.suggested-scroll .card-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.suggested-scroll .card-title {
+    margin-bottom: 2px !important;
+    margin-top: 0 !important;
+}
+.suggested-scroll .author {
+    margin-bottom: 2px !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1.1;
+}
+.suggested-scroll .category-pills {
+    margin-bottom: 4px !important;
+    margin-top: 0 !important;
 }
 </style>
 <script>
@@ -266,8 +380,36 @@ const scrollRow = document.querySelector('.suggested-scroll');
 const btnLeft = document.querySelector('.scroll-left');
 const btnRight = document.querySelector('.scroll-right');
 if (scrollRow && btnLeft && btnRight) {
-    btnLeft.onclick = () => scrollRow.scrollBy({left: -190, behavior: 'smooth'});
-    btnRight.onclick = () => scrollRow.scrollBy({left: 190, behavior: 'smooth'});
+    btnLeft.onclick = () => {
+        const card = scrollRow.querySelector('.col-lg-3');
+        const cards = scrollRow.querySelectorAll('.col-lg-3');
+        if (!card) return;
+        let scrollAmount = card.offsetWidth;
+        if (cards.length > 1) {
+            const gap = cards[1].offsetLeft - cards[0].offsetLeft - cards[0].offsetWidth;
+            scrollAmount += gap;
+        }
+        if (scrollRow.scrollLeft <= 0) {
+            scrollRow.scrollTo({left: scrollRow.scrollWidth - scrollRow.clientWidth, behavior: 'smooth'});
+        } else {
+            scrollRow.scrollBy({left: -scrollAmount, behavior: 'smooth'});
+        }
+    };
+    btnRight.onclick = () => {
+        const card = scrollRow.querySelector('.col-lg-3');
+        const cards = scrollRow.querySelectorAll('.col-lg-3');
+        if (!card) return;
+        let scrollAmount = card.offsetWidth;
+        if (cards.length > 1) {
+            const gap = cards[1].offsetLeft - cards[0].offsetLeft - cards[0].offsetWidth;
+            scrollAmount += gap;
+        }
+        if (scrollRow.scrollLeft >= scrollRow.scrollWidth - scrollRow.clientWidth - 2) {
+            scrollRow.scrollTo({left: 0, behavior: 'smooth'});
+        } else {
+            scrollRow.scrollBy({left: scrollAmount, behavior: 'smooth'});
+        }
+    };
 }
 
 // Initialize Swiper for Latest Stories
@@ -303,30 +445,20 @@ const latestSwiper = new Swiper('.latest-swiper', {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // ... existing Swiper for featured-swiper ...
     const suggestedSwiper = new Swiper('.suggested-swiper', {
-        slidesPerView: 5,
+        slidesPerView: 4,
         slidesPerGroup: 1,
-        spaceBetween: 4,
+        spaceBetween: 20,
         loop: true,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-        },
-        pagination: {
-            el: '.suggested-swiper .swiper-pagination',
-            clickable: true,
-        },
         navigation: {
             nextEl: '.suggested-swiper .swiper-button-next',
             prevEl: '.suggested-swiper .swiper-button-prev',
         },
         breakpoints: {
-            640: { slidesPerView: 2, slidesPerGroup: 1 },
-            768: { slidesPerView: 3, slidesPerGroup: 1 },
-            1024: { slidesPerView: 4, slidesPerGroup: 1 },
-            1200: { slidesPerView: 5, slidesPerGroup: 1 }
+            640: { slidesPerView: 1, slidesPerGroup: 1 },
+            900: { slidesPerView: 2, slidesPerGroup: 1 },
+            1200: { slidesPerView: 3, slidesPerGroup: 1 },
+            1400: { slidesPerView: 4, slidesPerGroup: 1 }
         }
     });
 });
