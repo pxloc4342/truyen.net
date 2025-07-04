@@ -95,12 +95,12 @@
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= APP_URL ?>/dang-nhap">
+                                <a class="nav-link" href="auth.php">
                                     <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= APP_URL ?>/dang-ky">
+                                <a class="nav-link" href="auth.php#register">
                                     <i class="fas fa-user-plus me-1"></i>Đăng ký
                                 </a>
                             </li>

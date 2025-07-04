@@ -1,4 +1,11 @@
 <?php
+if (
+    $_SERVER['REQUEST_URI'] === '/WebTruyenTranh/auth.php' ||
+    $_SERVER['REQUEST_URI'] === '/auth.php'
+) {
+    require __DIR__ . '/auth.php';
+    exit;
+}
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
