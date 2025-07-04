@@ -121,11 +121,9 @@
                                        type="search" 
                                        name="q" 
                                        placeholder="Nhập tên truyện..." 
-                                       value="<?= htmlspecialchars($_GET['q'] ?? '') ?>"
+                                       value="<?= htmlspecialchars($keyword ?? $_GET['q'] ?? '') ?>"
                                        aria-label="Tìm kiếm truyện">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                                <button class="btn btn-primary" type="submit" style="min-width:48px"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
                     </div>
@@ -136,7 +134,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <?= $content ?>
+        <?php if (isset($content)) echo $content; ?>
     </main>
 
     <!-- Footer mới -->

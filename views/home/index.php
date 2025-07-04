@@ -24,8 +24,10 @@
                                 </a>
                             <?php endif; ?>
                             <div class="card-body">
-                                <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                                <p class="author">
+                                <h5 class="card-title mb-1" style="margin-bottom:0.1em !important;">
+                                    <?= htmlspecialchars($story['title']) ?>
+                                </h5>
+                                <p class="author" style="margin-bottom:0.12rem;margin-top:0;font-size:0.85em;">
                                     <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
                                 </p>
                                 <div class="category-pills">
@@ -33,15 +35,22 @@
                                     $categories = $this->db->fetchAll(
                                         "SELECT c.id, c.name FROM categories c 
                                          JOIN story_category sc ON c.id = sc.category_id 
-                                         WHERE sc.story_id = ? LIMIT 2", 
+                                         WHERE sc.story_id = ?",
                                         [$story['id']]
                                     );
+                                    $maxCategories = 2;
+                                    $catCount = count($categories);
+                                    $displayed = 0;
                                     foreach ($categories as $category):
+                                        if ($displayed >= $maxCategories) break;
                                     ?>
-                                    <span class="category-pill">
+                                    <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
                                         <?= htmlspecialchars($category['name']) ?>
                                     </span>
-                                    <?php endforeach; ?>
+                                    <?php $displayed++; endforeach; ?>
+                                    <?php if ($catCount > $maxCategories): ?>
+                                    <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;background:#eee;color:#888;">...</span>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="read-btn-wrapper">
                                     <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-primary w-100">
@@ -78,7 +87,7 @@
             <div>
                 <h2 class="mb-0">Truyện đề xuất</h2>
             </div>
-            <a href="<?= APP_URL ?>/truyen" class="btn btn-outline-primary">
+            <a href="<?= APP_URL ?>/truyen-de-xuat" class="btn btn-outline-primary">
                 <i class="fas fa-list me-1"></i>Xem tất cả
             </a>
         </div>
@@ -101,29 +110,38 @@
                                 </div>
                             </a>
                         <?php endif; ?>
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                            <p class="author mb-1">
+                        <div class="card-body d-flex flex-column justify-content-between" style="flex:1 1 auto;">
+                            <h5 class="card-title mb-1" style="margin-bottom:0.1em !important;">
+                                <?= htmlspecialchars($story['title']) ?>
+                            </h5>
+                            <p class="author" style="margin-bottom:0.12rem;margin-top:0;font-size:0.85em;">
                                 <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
                             </p>
-                            <div class="category-pills mb-2">
+                            <div class="category-pills mb-2" style="gap:0.25em;">
                                 <?php
                                 $categories = $this->db->fetchAll(
                                     "SELECT c.id, c.name FROM categories c 
                                      JOIN story_category sc ON c.id = sc.category_id 
-                                     WHERE sc.story_id = ? LIMIT 2",
+                                     WHERE sc.story_id = ?",
                                     [$story['id']]
                                 );
+                                $maxCategories = 2;
+                                $catCount = count($categories);
+                                $displayed = 0;
                                 foreach ($categories as $category):
+                                    if ($displayed >= $maxCategories) break;
                                 ?>
-                                <span class="category-pill">
+                                <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
                                     <?= htmlspecialchars($category['name']) ?>
                                 </span>
-                                <?php endforeach; ?>
+                                <?php $displayed++; endforeach; ?>
+                                <?php if ($catCount > $maxCategories): ?>
+                                <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;background:#eee;color:#888;">...</span>
+                                <?php endif; ?>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="read-btn-wrapper">
-                                    <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                    <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="btn btn-outline-primary btn-sm mt-auto w-100" style="margin-top:auto;">
                                         <i class="fas fa-book-open me-1"></i>Đọc
                                     </a>
                                 </div>
@@ -155,7 +173,7 @@
 <section class="py-5">
     <div class="container">
         <div class="section-header">
-            <h2>Danh sách truyện mới cập nhật</h2>
+            <h2>Truyện mới cập nhật</h2>
         </div>
         <div class="row">
             <?php foreach ($latestStories as $story): ?>
@@ -176,8 +194,10 @@
                     <?php endif; ?>
                     <div class="card-body">
                         <div class="info-group">
-                            <h5 class="card-title"><?= htmlspecialchars($story['title']) ?></h5>
-                            <p class="author">
+                            <h5 class="card-title mb-1" style="margin-bottom:0.2em !important;">
+                                <?= htmlspecialchars($story['title']) ?>
+                            </h5>
+                            <p class="author" style="margin-bottom:0.25rem;margin-top:0;">
                                 <i class="fas fa-user me-1"></i><?= htmlspecialchars($story['author']) ?>
                             </p>
                         </div>

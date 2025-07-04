@@ -48,11 +48,29 @@ class Story {
         return $this->db->fetchAll($sql, [$keyword, $keyword]);
     }
     
-    public function getHot($limit = 8) {
-        return $this->db->fetchAll(
-            "SELECT * FROM {$this->table} ORDER BY views DESC LIMIT ?",
-            [$limit]
-        );
+    public function getHot($limit = 8, $status = '', $categoryId = '') {
+        $params = [];
+        $where = [];
+        $join = '';
+        if ($status) {
+            $where[] = 's.status = ?';
+            $params[] = $status;
+        }
+        if ($categoryId) {
+            $join .= ' JOIN story_category sc ON s.id = sc.story_id ';
+            $where[] = 'sc.category_id = ?';
+            $params[] = $categoryId;
+        }
+        $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+        $sql = "SELECT s.*, 
+                (SELECT c.id FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_id,
+                (SELECT c.chapter_number FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_number
+            FROM stories s
+            $join
+            $whereSql
+            ORDER BY s.views DESC, s.created_at DESC
+            LIMIT $limit";
+        return $this->db->fetchAll($sql, $params);
     }
     
     public function getLatest($limit = 8) {
@@ -94,5 +112,31 @@ class Story {
             [$categoryId]
         );
         return $result['count'];
+    }
+    
+    // Lấy truyện mới cập nhật, có thể lọc theo trạng thái và thể loại, sắp xếp theo chapter mới nhất
+    public function getLatestWithFilter($status = '', $categoryId = '', $limit = 30, $offset = 0) {
+        $params = [];
+        $where = [];
+        $join = '';
+        if ($status) {
+            $where[] = 's.status = ?';
+            $params[] = $status;
+        }
+        if ($categoryId) {
+            $join .= ' JOIN story_category sc ON s.id = sc.story_id ';
+            $where[] = 'sc.category_id = ?';
+            $params[] = $categoryId;
+        }
+        $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
+        $sql = "SELECT s.*, 
+                (SELECT c.id FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_id,
+                (SELECT c.chapter_number FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_number
+            FROM stories s
+            $join
+            $whereSql
+            ORDER BY latest_chapter_number DESC, s.created_at DESC
+            LIMIT $limit OFFSET $offset";
+        return $this->db->fetchAll($sql, $params);
     }
 } 

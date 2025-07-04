@@ -4,11 +4,17 @@ class StoryController extends Controller {
     
     public function index() {
         $storyModel = new Story();
-        $stories = $storyModel->getAllStories();
-        
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $categoryId = isset($_GET['category']) ? $_GET['category'] : '';
+        $stories = $storyModel->getLatestWithFilter($status, $categoryId, 30, 0);
+        // Lấy danh sách thể loại cho bộ lọc
+        $categories = $this->db->fetchAll("SELECT id, name FROM categories ORDER BY name ASC");
         $this->render('stories/index', [
             'stories' => $stories,
-            'title' => 'Danh sách truyện'
+            'categories' => $categories,
+            'title' => 'Truyện mới cập nhật',
+            'status' => $status,
+            'category' => $categoryId
         ]);
     }
     
@@ -66,6 +72,45 @@ class StoryController extends Controller {
             'nextChapter' => $nextChapter,
             'chapters' => $chapters,
             'chapterImages' => $chapterImages
+        ]);
+    }
+
+    // Hiển thị tất cả truyện đề xuất với phân trang
+    public function allSuggested() {
+        $perPage = 30;
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+        $offset = ($page - 1) * $perPage;
+        $total = $this->db->fetch("SELECT COUNT(*) as count FROM stories")['count'];
+        $totalPages = ceil($total / $perPage);
+        $stories = $this->db->fetchAll("
+            SELECT s.*, 
+                (SELECT COUNT(*) FROM chapters WHERE story_id = s.id) as chapter_count,
+                (SELECT c.id FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_id,
+                (SELECT c.chapter_number FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_number
+            FROM stories s 
+            ORDER BY s.views DESC, s.created_at DESC 
+            LIMIT $perPage OFFSET $offset
+        ");
+        $this->render('stories/index', [
+            'stories' => $stories,
+            'title' => 'Tất cả truyện đề xuất - ' . APP_NAME,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
+        ]);
+    }
+
+    public function hot() {
+        $storyModel = new Story();
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $categoryId = isset($_GET['category']) ? $_GET['category'] : '';
+        $stories = $storyModel->getHot(30, $status, $categoryId);
+        $categories = $this->db->fetchAll("SELECT id, name FROM categories ORDER BY name ASC");
+        $this->render('stories/index', [
+            'stories' => $stories,
+            'title' => 'Truyện hot',
+            'categories' => $categories,
+            'status' => $status,
+            'category' => $categoryId
         ]);
     }
 } 

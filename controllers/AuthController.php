@@ -70,4 +70,42 @@ class AuthController extends Controller {
         session_destroy();
         $this->redirect(APP_URL . '/dang-nhap');
     }
+
+    public function register() {
+        $error = '';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = trim($_POST['name'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+            $confirm = $_POST['confirm_password'] ?? '';
+            // Validate
+            if (!$name || !$email || !$password || !$confirm) {
+                $error = 'Vui lòng nhập đầy đủ thông tin.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'Email không hợp lệ.';
+            } elseif ($password !== $confirm) {
+                $error = 'Mật khẩu nhập lại không khớp.';
+            } else {
+                // Kiểm tra email đã tồn tại
+                $user = $this->db->fetch("SELECT * FROM users WHERE email = ?", [$email]);
+                if ($user) {
+                    $error = 'Email đã được sử dụng.';
+                } else {
+                    // Lưu user mới
+                    $hash = password_hash($password, PASSWORD_DEFAULT);
+                    $this->db->insert('users', [
+                        'name' => $name,
+                        'email' => $email,
+                        'password' => $hash
+                    ]);
+                    // Chuyển hướng sang đăng nhập
+                    $this->redirect('/dang-nhap');
+                }
+            }
+        }
+        $this->render('auth/register', [
+            'error' => $error,
+            'title' => 'Đăng ký tài khoản'
+        ]);
+    }
 } 

@@ -72,6 +72,12 @@ $router->addRoute('/admin/chapters/story/{story_id}', 'AdminChapterController@li
 $router->addRoute('/admin/chapters/edit/{id}', 'AdminChapterController@edit');
 $router->addRoute('/admin/chapters/update/{id}', 'AdminChapterController@update');
 
+// Thêm route mới '/truyen-de-xuat' trỏ đến StoryController@allSuggested
+$router->addRoute('/truyen-de-xuat', 'StoryController@allSuggested');
+
+// Thêm route '/truyen-hot' trỏ đến StoryController@hot
+$router->addRoute('/truyen-hot', 'StoryController@hot');
+
 // Xử lý request
 $router->dispatch();
 ?> 

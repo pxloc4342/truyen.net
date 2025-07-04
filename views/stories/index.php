@@ -1,21 +1,59 @@
-<?php include VIEWS_PATH . '/layouts/main.php'; ?>
-
 <div class="container mt-4">
-    <h1 class="mb-4">Danh sách truyện</h1>
+    <h2 class="mb-4" style="font-size:1.7rem;font-weight:700;color:#222;">
+        <?php if (!empty($categoryName)): ?>
+            Truyện <?= htmlspecialchars($categoryName) ?>
+        <?php else: ?>
+            <?= htmlspecialchars($title) ?>
+        <?php endif; ?>
+    </h2>
+    <div class="row mb-4">
+        <div class="col-md-6 mb-2">
+            <form method="get" class="d-flex align-items-center gap-2">
+                <label for="status" class="me-2 mb-0">Trạng thái:</label>
+                <select name="status" id="status" class="form-select form-select-sm w-auto">
+                    <option value="">Tất cả</option>
+                    <option value="ongoing" <?= isset($status) && $status == 'ongoing' ? 'selected' : '' ?>>Đang ra</option>
+                    <option value="completed" <?= isset($status) && $status == 'completed' ? 'selected' : '' ?>>Full</option>
+                    <option value="hiatus" <?= isset($status) && $status == 'hiatus' ? 'selected' : '' ?>>Tạm ngưng</option>
+                </select>
+                <label for="category" class="ms-3 me-2 mb-0">Thể loại:</label>
+                <select name="category" id="category" class="form-select form-select-sm w-auto">
+                    <option value="">Tất cả</option>
+                    <?php if (!empty($categories)): ?>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>" <?= isset($category) && $category == $cat['id'] ? 'selected' : '' ?>><?= htmlspecialchars($cat['name']) ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+                <button type="submit" class="btn btn-primary btn-sm ms-2">Lọc</button>
+            </form>
+        </div>
+    </div>
     
     <div class="row">
         <?php if (!empty($stories)): ?>
             <?php foreach ($stories as $story): ?>
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100">
-                        <?php if (!empty($story['cover_image'])): ?>
-                            <img src="<?= APP_URL ?>/assets/images/covers/<?php echo $story['cover_image']; ?>" 
-                                 class="card-img-top" alt="<?php echo htmlspecialchars($story['title']); ?>">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+                    <div class="card h-100 d-flex flex-column align-items-stretch">
+                        <?php if (!empty($story['thumbnail'])): ?>
+                            <img src="<?= APP_URL . $story['thumbnail']; ?>" class="card-img-top mx-auto d-block story-cover-img" alt="<?= htmlspecialchars($story['title']); ?>">
+                        <?php elseif (!empty($story['cover_image'])): ?>
+                            <img src="<?= APP_URL ?>/assets/images/covers/<?= $story['cover_image']; ?>" class="card-img-top mx-auto d-block story-cover-img" alt="<?= htmlspecialchars($story['title']); ?>">
                         <?php endif; ?>
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo htmlspecialchars($story['title']); ?></h5>
-                            <p class="card-text"><?php echo htmlspecialchars(substr($story['description'], 0, 100)) . '...'; ?></p>
-                            <a href="<?= APP_URL ?>/truyen/<?php echo $story['id']; ?>" class="btn btn-primary">Đọc truyện</a>
+                        <div class="card-body d-flex flex-column align-items-stretch justify-content-between" style="flex:1 1 auto;">
+                            <div class="w-100 text-start mb-2">
+                                <h5 class="card-title mb-1" style="line-height:1.2;overflow:hidden;margin-bottom:0.3em !important;">
+                                    <?= htmlspecialchars($story['title']); ?>
+                                </h5>
+                                <?php if (!empty($story['latest_chapter_id']) && !empty($story['latest_chapter_number'])): ?>
+                                    <a href="<?= APP_URL ?>/truyen/<?= $story['id']; ?>/chuong/<?= $story['latest_chapter_id']; ?>" class="chapter-link-custom" style="text-decoration:none;">
+                                        Chapter <?= (int)$story['latest_chapter_number'] ?>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-muted chapter-link-custom">Chưa có chapter</span>
+                                <?php endif; ?>
+                            </div>
+                            <a href="<?= APP_URL ?>/truyen/<?= $story['id']; ?>" class="btn btn-primary mt-auto w-100">Đọc truyện</a>
                         </div>
                     </div>
                 </div>
@@ -26,4 +64,37 @@
             </div>
         <?php endif; ?>
     </div>
-</div> 
+    <?php if (!empty($totalPages) && $totalPages > 1): ?>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <li class="page-item<?= ($i == ($currentPage ?? 1)) ? ' active' : '' ?>">
+                    <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                </li>
+            <?php endfor; ?>
+        </ul>
+    </nav>
+    <?php endif; ?>
+</div>
+
+<script>
+// Khi chọn thể loại khác, chuyển trang sang /the-loai/{id_moi}
+document.addEventListener('DOMContentLoaded', function() {
+    var categorySelect = document.getElementById('category');
+    var statusSelect = document.getElementById('status');
+    var filterForm = categorySelect.closest('form');
+    var currentCategoryId = '<?= isset($categoryId) ? $categoryId : '' ?>';
+    categorySelect.addEventListener('change', function() {
+        var selected = this.value;
+        if (selected && selected !== currentCategoryId) {
+            window.location.href = '<?= APP_URL ?>/the-loai/' + selected;
+        } else {
+            filterForm.submit();
+        }
+    });
+    // Nếu chỉ đổi trạng thái thì submit form bình thường
+    statusSelect.addEventListener('change', function() {
+        filterForm.submit();
+    });
+});
+</script> 

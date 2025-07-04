@@ -109,4 +109,30 @@ class AdminCategoryController extends Controller {
         }
     }
 }
+
+class CategoryController extends Controller {
+    public function show($id) {
+        // Lấy thông tin thể loại
+        $category = $this->db->fetch("SELECT * FROM categories WHERE id = ?", [$id]);
+        if (!$category) {
+            $this->render('errors/404', ['title' => 'Không tìm thấy thể loại']);
+            return;
+        }
+        // Lấy truyện thuộc thể loại này, sắp xếp theo chapter mới nhất
+        $stories = $this->db->fetchAll("SELECT s.*, 
+            (SELECT c.id FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_id,
+            (SELECT c.chapter_number FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_number
+            FROM stories s
+            JOIN story_category sc ON s.id = sc.story_id
+            WHERE sc.category_id = ?
+            ORDER BY latest_chapter_number DESC, s.created_at DESC
+        ", [$id]);
+        $this->render('stories/index', [
+            'stories' => $stories,
+            'title' => 'Truyện ' . $category['name'],
+            'categoryName' => $category['name'],
+            'categoryId' => $id
+        ]);
+    }
+}
 ?> 
