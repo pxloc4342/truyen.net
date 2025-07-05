@@ -138,7 +138,7 @@ display: none;
   line-height: 22px;
   letter-spacing: 0.5px;
   outline: none;
-  color: #c4c3ca;
+  color: #000 !important;
   background-color: #fff !important;
   border: 1px solid #e0e0e0;
   -webkit-transition: all 200ms linear;
@@ -150,6 +150,10 @@ display: none;
   border: none;
   outline: none;
   box-shadow: 0 4px 8px 0 #52a5d7;
+}
+.form-style::placeholder {
+  color: #bdbdbd !important;
+  opacity: 1;
 }
 .input-icon {
   position: absolute;
@@ -200,4 +204,24 @@ display: none;
   padding: 6px 16px;
   color: #2D82B5 !important;
   box-shadow: 0 2px 8px rgba(100,100,100,0.10);
+}
+.login-form .form-control {
+  color: #000 !important;
+}
+.login-form .form-control::placeholder {
+  color: #bdbdbd !important;
+  opacity: 1;
+}
+.btn-home {
+  background: #fff !important;
+  color: #2D82B5 !important;
+  border-radius: 8px !important;
+  border: 1px solid #2D82B5 !important;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: none !important;
+}
+.btn-home:hover, .btn-home:focus {
+  background: linear-gradient(90deg, #2D82B5 0%, #53A6D8 100%) !important;
+  color: #fff !important;
+  box-shadow: none !important;
 } 

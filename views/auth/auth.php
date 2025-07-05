@@ -41,19 +41,19 @@
                     <div class="section text-center">
                       <h4 class="mb-3 pb-3">Register</h4>
                       <div class="form-group">
-                        <input type="text" class="form-style" placeholder="Full Name">
+                        <input type="text" class="form-style" placeholder="Họ và tên">
                         <i class="input-icon uil uil-user"></i>
                       </div>  
                       <div class="form-group mt-2">
-                        <input type="tel" class="form-style" placeholder="Phone Number">
-                        <i class="input-icon uil uil-phone"></i>
-                      </div>  
-                      <div class="form-group mt-2">
-                        <input type="email" class="form-style" placeholder="Email">
+                        <input type="email" class="form-style" placeholder="Gmail">
                         <i class="input-icon uil uil-at"></i>
                       </div>
                       <div class="form-group mt-2">
-                        <input type="password" class="form-style" placeholder="Password">
+                        <input type="password" class="form-style" placeholder="Mật khẩu">
+                        <i class="input-icon uil uil-lock-alt"></i>
+                      </div>
+                      <div class="form-group mt-2">
+                        <input type="password" class="form-style" placeholder="Xác nhận mật khẩu">
                         <i class="input-icon uil uil-lock-alt"></i>
                       </div>
                       <a href="#" class="btn mt-4">Register</a>

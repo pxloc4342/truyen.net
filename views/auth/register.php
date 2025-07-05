@@ -21,20 +21,20 @@
                         <form method="post" action="" class="login-form">
                             <div class="form-group">
                                 <label for="name" class="form-label">
-                                    <i class="fas fa-user me-2"></i>Họ tên
+                                    <i class="fas fa-user me-2"></i>Họ và tên
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    <input type="text" class="form-control" id="name" name="name" required value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" placeholder="Nhập họ tên">
+                                    <input type="text" class="form-control" id="name" name="name" required value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" placeholder="Nhập họ và tên">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="email" class="form-label">
-                                    <i class="fas fa-envelope me-2"></i>Email
+                                    <i class="fas fa-envelope me-2"></i>Gmail
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    <input type="email" class="form-control" id="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" placeholder="Nhập email">
+                                    <input type="email" class="form-control" id="email" name="email" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" placeholder="Nhập Gmail">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -48,11 +48,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password" class="form-label">
-                                    <i class="fas fa-lock me-2"></i>Nhập lại mật khẩu
+                                    <i class="fas fa-lock me-2"></i>Xác nhận mật khẩu
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Nhập lại mật khẩu">
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Xác nhận mật khẩu">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-login w-100 mt-3">
