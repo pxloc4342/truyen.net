@@ -1,3 +1,40 @@
+<?php
+session_start();
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/core/Database.php';
+$error = '';
+$success = '';
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['confirm_password'])
+) {
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $confirm = $_POST['confirm_password'];
+    if (!$username || !$email || !$password || !$confirm) {
+        $error = 'Vui lòng nhập đầy đủ thông tin.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Email không hợp lệ.';
+    } elseif ($password !== $confirm) {
+        $error = 'Mật khẩu nhập lại không khớp.';
+    } else {
+        $db = Database::getInstance();
+        $user = $db->fetch("SELECT * FROM users WHERE username = ? OR email = ?", [$username, $email]);
+        if ($user) {
+            $error = 'Tên đăng nhập hoặc email đã được sử dụng.';
+        } else {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $db->insert('users', [
+                'username' => $username,
+                'email' => $email,
+                'password' => $hash
+            ]);
+            $success = 'Đăng ký thành công! Bạn có thể đăng nhập.';
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,6 +52,14 @@
       <?= htmlspecialchars($_SESSION['error_message']) ?>
     </div>
     <?php unset($_SESSION['error_message']); ?>
+  <?php elseif ($error): ?>
+    <div style="margin: 0 auto; max-width: 420px; margin-top: 24px;" class="alert alert-danger text-center">
+      <?= htmlspecialchars($error) ?>
+    </div>
+  <?php elseif ($success): ?>
+    <div style="margin: 0 auto; max-width: 420px; margin-top: 24px;" class="alert alert-success text-center">
+      <?= htmlspecialchars($success) ?>
+    </div>
   <?php endif; ?>
   <a href="/WebTruyenTranh/" class="btn btn-home btn-outline-primary" style="font-weight:500; font-size:12px; padding:2px 12px; border-radius:8px; height:32px; line-height:28px; position:absolute; top:8px; left:8px; z-index:1000;">TRANG CHỦ</a>
   <div class="section">
@@ -50,9 +95,9 @@
                   <div class="center-wrap">
                     <div class="section text-center">
                       <h4 class="mb-3 pb-3">Đăng ký</h4>
-                      <form method="POST" action="dang-ky">
+                      <form method="POST" action="auth.php#register">
                         <div class="form-group">
-                          <input type="text" class="form-style" name="name" placeholder="Họ và tên" required>
+                          <input type="text" class="form-style" name="username" placeholder="Tên đăng nhập" required>
                           <i class="input-icon uil uil-user"></i>
                         </div>
                         <div class="form-group mt-2">

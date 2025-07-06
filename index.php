@@ -85,6 +85,10 @@ $router->addRoute('/truyen-de-xuat', 'StoryController@allSuggested');
 // Thêm route '/truyen-hot' trỏ đến StoryController@hot
 $router->addRoute('/truyen-hot', 'StoryController@hot');
 
+// Thêm route '/toggle-favorite' và '/yeu-thich'
+$router->addRoute('/toggle-favorite', 'StoryController@toggleFavorite');
+$router->addRoute('/yeu-thich', 'StoryController@favorites');
+
 // Xử lý request
 $router->dispatch();
 ?> 

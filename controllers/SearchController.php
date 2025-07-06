@@ -47,6 +47,21 @@ class SearchController extends Controller {
 
         $stories = $this->db->fetchAll($sql, $params);
 
+        // Đánh dấu is_favorite cho từng truyện nếu user đã đăng nhập
+        if (!empty($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            $story_ids = array_column($stories, 'id');
+            if ($story_ids) {
+                $in = str_repeat('?,', count($story_ids) - 1) . '?';
+                $favRows = $this->db->fetchAll("SELECT story_id FROM favorite_stories WHERE user_id = ? AND story_id IN ($in)", array_merge([$user_id], $story_ids));
+                $favMap = array_column($favRows, 'story_id');
+                foreach ($stories as &$story) {
+                    $story['is_favorite'] = in_array($story['id'], $favMap);
+                }
+                unset($story);
+            }
+        }
+
         $this->render('search/index', [
             'categories' => $categories,
             'stories' => $stories,

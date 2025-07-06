@@ -29,6 +29,11 @@ class StoryController extends Controller {
             ]);
             return;
         }
+        // Gán trạng thái yêu thích nếu đã đăng nhập
+        if (!empty($_SESSION['user_id'])) {
+            $isFav = $this->db->fetch("SELECT 1 FROM favorite_stories WHERE user_id = ? AND story_id = ?", [$_SESSION['user_id'], $id]);
+            $story['is_favorite'] = (bool)$isFav;
+        }
         $chapters = $chapterModel->getByStoryId($id);
         $this->render('stories/show', [
             'story' => $story,
@@ -111,6 +116,41 @@ class StoryController extends Controller {
             'categories' => $categories,
             'status' => $status,
             'category' => $categoryId
+        ]);
+    }
+
+    public function toggleFavorite() {
+        if (empty($_SESSION['user_id']) || empty($_POST['story_id'])) {
+            $this->redirect(APP_URL . '/auth.php');
+            return;
+        }
+        $user_id = $_SESSION['user_id'];
+        $story_id = (int)$_POST['story_id'];
+        $favorite = $this->db->fetch("SELECT * FROM favorite_stories WHERE user_id = ? AND story_id = ?", [$user_id, $story_id]);
+        if ($favorite) {
+            $this->db->delete('favorite_stories', 'user_id = ? AND story_id = ?', [$user_id, $story_id]);
+            $_SESSION['favorite_message'] = 'Đã xóa khỏi danh sách yêu thích.';
+        } else {
+            $this->db->insert('favorite_stories', [
+                'user_id' => $user_id,
+                'story_id' => $story_id
+            ]);
+            $_SESSION['favorite_message'] = 'Đã thêm vào danh sách yêu thích.';
+        }
+        $redirect = $_POST['redirect'] ?? ($_SERVER['HTTP_REFERER'] ?? (APP_URL . '/'));
+        $this->redirect($redirect);
+    }
+
+    public function favorites() {
+        if (empty($_SESSION['user_id'])) {
+            $this->redirect(APP_URL . '/auth.php');
+            return;
+        }
+        $user_id = $_SESSION['user_id'];
+        $stories = $this->db->fetchAll("SELECT s.* FROM stories s JOIN favorite_stories f ON s.id = f.story_id WHERE f.user_id = ? ORDER BY f.created_at DESC", [$user_id]);
+        $this->render('stories/favorites', [
+            'stories' => $stories,
+            'title' => 'Truyện yêu thích'
         ]);
     }
 } 

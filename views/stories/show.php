@@ -61,6 +61,17 @@
           <i class="fas fa-bolt me-1"></i> Đọc mới nhất
         </a>
       </div>
+      <?php if (!empty($_SESSION['user_id'])): ?>
+        <form method="post" action="<?= APP_URL ?>/toggle-favorite" style="display:inline;">
+          <input type="hidden" name="story_id" value="<?= $story['id'] ?>">
+          <input type="hidden" name="redirect" value="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>">
+          <button type="submit" name="toggle_favorite" style="background:<?= !empty($story['is_favorite']) ? '#fff' : '#ff5e62' ?>;color:<?= !empty($story['is_favorite']) ? '#ff5e62' : '#fff' ?>;border:2px solid <?= !empty($story['is_favorite']) ? '#ff5e62' : 'transparent' ?>;padding:6px 18px;border-radius:8px;font-weight:600;box-shadow:0 2px 8px rgba(255,94,98,0.08);margin-bottom:12px;transition:background 0.2s, border 0.2s;">
+            <?= !empty($story['is_favorite']) ? 'Đã yêu thích' : 'Yêu thích' ?>
+          </button>
+        </form>
+      <?php else: ?>
+        <button type="button" onclick="alert('Bạn cần đăng nhập để sử dụng tính năng này!')" style="background:#ff5e62;color:#fff;border:none;padding:6px 18px;border-radius:8px;font-weight:600;box-shadow:0 2px 8px rgba(255,94,98,0.08);margin-bottom:12px;transition:background 0.2s;">Yêu thích</button>
+      <?php endif; ?>
     </div>
   </div>
 

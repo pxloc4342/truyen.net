@@ -30,6 +30,18 @@
                         }
                         ?>
                     </div>
+                    <?php if (!empty($_SESSION['user_id'])): ?>
+                        <form method="post" action="<?= APP_URL ?>/yeu-thich" style="display:inline;">
+                            <input type="hidden" name="story_id" value="<?= $story['id'] ?>">
+                            <button type="submit" name="toggle_favorite" style="background:none;border:none;padding:0;cursor:pointer;font-size:20px;vertical-align:middle;">
+                                <?php if (!empty($story['is_favorite'])): ?>
+                                    <span style="color:#e74c3c;">&#10084;</span>
+                                <?php else: ?>
+                                    <span style="color:#bbb;">&#10084;</span>
+                                <?php endif; ?>
+                            </button>
+                        </form>
+                    <?php endif; ?>
                     <a class="read-btn" href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>">Đọc</a>
                 </div>
             </div>

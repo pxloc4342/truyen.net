@@ -41,19 +41,18 @@ class AuthController extends Controller {
         unset($_SESSION['admin_username']);
         unset($_SESSION['admin_email']);
         session_destroy();
-        $this->redirect(APP_URL . '/dang-nhap');
+        $this->redirect(APP_URL . '/');
     }
 
     public function register() {
         $error = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
+            $username = trim($_POST['username'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $password = $_POST['password'] ?? '';
             $confirm = $_POST['confirm_password'] ?? '';
-            $username = $name; // Nếu có trường username riêng thì lấy từ $_POST['username']
             // Validate
-            if (!$name || !$email || !$password || !$confirm) {
+            if (!$username || !$email || !$password || !$confirm) {
                 $error = 'Vui lòng nhập đầy đủ thông tin.';
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $error = 'Email không hợp lệ.';

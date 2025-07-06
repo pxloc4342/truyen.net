@@ -88,9 +88,31 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="/profile">Hồ sơ</a></li>
-                                    <li><a class="dropdown-item" href="/favorites">Yêu thích</a></li>
+                                    <li class="dropdown-submenu position-relative">
+                                        <a class="dropdown-item" href="<?= APP_URL ?>/yeu-thich">Yêu thích</a>
+                                        <?php
+                                        if (isset($_SESSION['user_id'])) {
+                                            $user_id = $_SESSION['user_id'];
+                                            $favoriteStories = $this->db->fetchAll("SELECT s.id, s.title, s.thumbnail FROM stories s JOIN favorite_stories f ON s.id = f.story_id WHERE f.user_id = ? ORDER BY f.created_at DESC LIMIT 5", [$user_id]);
+                                        }
+                                        ?>
+                                        <?php if (!empty($favoriteStories)): ?>
+                                            <ul class="dropdown-menu show position-absolute" style="left:100%;top:0;min-width:220px;">
+                                                <?php foreach ($favoriteStories as $fav): ?>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-2" href="<?= APP_URL ?>/truyen/<?= $fav['id'] ?>">
+                                                            <img src="<?= $fav['thumbnail'] ? APP_URL . $fav['thumbnail'] : APP_URL . '/assets/images/default_cover.jpg' ?>" style="width:32px;height:40px;object-fit:cover;border-radius:4px;">
+                                                            <span><?= htmlspecialchars($fav['title']) ?></span>
+                                                        </a>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-primary" href="<?= APP_URL ?>/yeu-thich">Xem tất cả &raquo;</a></li>
+                                            </ul>
+                                        <?php endif; ?>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/dang-xuat">Đăng xuất</a></li>
+                                    <li><a class="dropdown-item" href="<?= APP_URL ?>/dang-xuat">Đăng xuất</a></li>
                                 </ul>
                             </li>
                         <?php else: ?>
