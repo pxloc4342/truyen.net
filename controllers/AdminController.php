@@ -68,7 +68,7 @@ class AdminController extends Controller {
         unset($_SESSION['admin_email']);
         session_destroy();
         
-        $this->redirect('/admin/login');
+        $this->redirect('http://localhost/WebTruyenTranh/');
     }
     
     public function dashboard() {

@@ -44,9 +44,9 @@
                                     foreach ($categories as $category):
                                         if ($displayed >= $maxCategories) break;
                                     ?>
-                                    <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
+                                    <a href="<?= APP_URL ?>/the-loai/<?= $category['id'] ?>" class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
                                         <?= htmlspecialchars($category['name']) ?>
-                                    </span>
+                                    </a>
                                     <?php $displayed++; endforeach; ?>
                                     <?php if ($catCount > $maxCategories): ?>
                                     <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;background:#eee;color:#888;">...</span>
@@ -131,9 +131,9 @@
                                 foreach ($categories as $category):
                                     if ($displayed >= $maxCategories) break;
                                 ?>
-                                <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
+                                <a href="<?= APP_URL ?>/the-loai/<?= $category['id'] ?>" class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;">
                                     <?= htmlspecialchars($category['name']) ?>
-                                </span>
+                                </a>
                                 <?php $displayed++; endforeach; ?>
                                 <?php if ($catCount > $maxCategories): ?>
                                 <span class="category-pill" style="font-size:0.8em;padding:0.08em 0.38em;border-radius:6px;min-width:unset;display:inline-block;background:#eee;color:#888;">...</span>

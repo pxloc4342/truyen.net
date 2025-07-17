@@ -160,6 +160,7 @@ body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
     margin: 0 auto;
     padding: 0;
     background: transparent;
+    margin-bottom: 100px; /* Thêm khoảng trống dưới ảnh để không bị đè */
 }
 .chapter-images img {
     font-size: initial;
@@ -180,9 +181,14 @@ body.dark-mode #scrollToTopBtn { background: #2323a7; color: #fff; }
 }
 </style>
 
-<div class="container py-3">
+<div class="container py-3 position-relative">
+    <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" class="position-absolute d-flex align-items-center" style="top: 18px; left: 4px; z-index: 1000; font-size: 1rem; color: #555; background: none; border: none; box-shadow: none; padding: 4px 10px; text-decoration: none;">
+        <i class="fas fa-arrow-left me-1"></i> Quay lại
+    </a>
     <div class="chapter-title fade-in">
-        <?= htmlspecialchars($story['title']) ?>
+        <a href="<?= APP_URL ?>/truyen/<?= $story['id'] ?>" style="color:inherit;text-decoration:none;">
+            <?= htmlspecialchars($story['title']) ?>
+        </a>
     </div>
     <div class="chapter-story-title fade-in">
         <?= htmlspecialchars($chapter['title']) ?>

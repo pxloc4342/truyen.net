@@ -55,6 +55,22 @@ class StoryController extends Controller {
             $this->render('errors/404', ['title' => 'Không tìm thấy chương']);
             return;
         }
+        // Lưu lịch sử đọc truyện
+        if (!empty($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            // Kiểm tra đã có lịch sử chưa
+            $history = $this->db->fetch("SELECT id FROM user_reading_history WHERE user_id = ? AND story_id = ?", [$user_id, $story_id]);
+            if ($history) {
+                $this->db->query("UPDATE user_reading_history SET chapter_id = ?, read_at = NOW() WHERE id = ?", [$chapter_id, $history['id']]);
+            } else {
+                $this->db->insert('user_reading_history', [
+                    'user_id' => $user_id,
+                    'story_id' => $story_id,
+                    'chapter_id' => $chapter_id,
+                    'read_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
         // Lấy nội dung chapter
         $chapterContent = htmlspecialchars($chapter['content']);
         // Lấy chapter trước/sau
@@ -85,22 +101,21 @@ class StoryController extends Controller {
         $perPage = 30;
         $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $perPage;
+        $status = isset($_GET['status']) ? $_GET['status'] : '';
+        $categoryId = isset($_GET['category']) ? $_GET['category'] : '';
+        $storyModel = new Story();
+        $stories = $storyModel->getLatestWithFilter($status, $categoryId, $perPage, $offset);
         $total = $this->db->fetch("SELECT COUNT(*) as count FROM stories")['count'];
         $totalPages = ceil($total / $perPage);
-        $stories = $this->db->fetchAll("
-            SELECT s.*, 
-                (SELECT COUNT(*) FROM chapters WHERE story_id = s.id) as chapter_count,
-                (SELECT c.id FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_id,
-                (SELECT c.chapter_number FROM chapters c WHERE c.story_id = s.id ORDER BY c.chapter_number DESC, c.id DESC LIMIT 1) AS latest_chapter_number
-            FROM stories s 
-            ORDER BY s.views DESC, s.created_at DESC 
-            LIMIT $perPage OFFSET $offset
-        ");
+        $categories = $this->db->fetchAll("SELECT id, name FROM categories ORDER BY name ASC");
         $this->render('stories/index', [
             'stories' => $stories,
             'title' => 'Tất cả truyện đề xuất - ' . APP_NAME,
             'currentPage' => $page,
-            'totalPages' => $totalPages
+            'totalPages' => $totalPages,
+            'categories' => $categories,
+            'status' => $status,
+            'category' => $categoryId
         ]);
     }
 
@@ -151,6 +166,19 @@ class StoryController extends Controller {
         $this->render('stories/favorites', [
             'stories' => $stories,
             'title' => 'Truyện yêu thích'
+        ]);
+    }
+
+    public function history() {
+        if (empty($_SESSION['user_id'])) {
+            $this->redirect(APP_URL . '/auth.php');
+            return;
+        }
+        $user_id = $_SESSION['user_id'];
+        $history = $this->db->fetchAll("SELECT h.*, s.title as story_title, s.thumbnail, c.chapter_number, c.title as chapter_title FROM user_reading_history h JOIN stories s ON h.story_id = s.id JOIN chapters c ON h.chapter_id = c.id WHERE h.user_id = ? ORDER BY h.read_at DESC LIMIT 20", [$user_id]);
+        $this->render('stories/history', [
+            'history' => $history,
+            'title' => 'Lịch sử đọc truyện'
         ]);
     }
 } 
